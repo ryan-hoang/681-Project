@@ -9,6 +9,6 @@ public class HomepageController {
 
     @RequestMapping(value = "/", method=RequestMethod.GET)
     public String rootView () {
-        return "index";
+        return "login";
     }
 }

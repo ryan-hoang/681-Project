@@ -17,11 +17,18 @@ public class Application {
 	}
 
 	@Bean
-	ServletRegistrationBean myServletRegistration () {
+	ServletRegistrationBean gameServletRegistration () {
 		ServletRegistrationBean srb = new ServletRegistrationBean();
 		srb.setServlet(new GameServlet());
 		srb.setUrlMappings(Arrays.asList("/game"));
 		return srb;
 	}
 
+	@Bean
+	ServletRegistrationBean validateServletRegistration () {
+		ServletRegistrationBean srb = new ServletRegistrationBean();
+		srb.setServlet(new ValidateServlet());
+		srb.setUrlMappings(Arrays.asList("/validateServlet"));
+		return srb;
+	}
 }
