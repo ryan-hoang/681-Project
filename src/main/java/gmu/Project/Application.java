@@ -28,7 +28,7 @@ public class Application {
 	ServletRegistrationBean validateServletRegistration () {
 		ServletRegistrationBean srb = new ServletRegistrationBean();
 		srb.setServlet(new ValidateServlet());
-		srb.setUrlMappings(Arrays.asList("/validateServlet"));
+		srb.setUrlMappings(Arrays.asList("/homepage"));
 		return srb;
 	}
 }
