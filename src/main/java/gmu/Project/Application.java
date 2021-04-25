@@ -31,4 +31,21 @@ public class Application {
 		srb.setUrlMappings(Arrays.asList("/homepage"));
 		return srb;
 	}
+
+	@Bean
+	ServletRegistrationBean pregameServletRegistration () {
+		ServletRegistrationBean srb = new ServletRegistrationBean();
+		srb.setServlet(new PregameServlet());
+		srb.setUrlMappings(Arrays.asList("/pregame"));
+		return srb;
+	}
+
+	//throwaway later, just for testing purposes
+	@Bean
+	ServletRegistrationBean testServletRegistration () {
+		ServletRegistrationBean srb = new ServletRegistrationBean();
+		srb.setServlet(new TestServlet());
+		srb.setUrlMappings(Arrays.asList("/test"));
+		return srb;
+	}
 }

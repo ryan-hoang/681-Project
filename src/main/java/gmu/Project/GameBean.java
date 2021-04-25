@@ -6,14 +6,22 @@ public class GameBean implements java.io.Serializable
 {
     private ArrayList<Card> hand = null;
     private double money = 0.0;
+    private Turn turn = null;
+    private GameState gs = null;
 
     public GameBean(){}
+
+    public Turn getTurn() {
+        return turn;
+    }
+    public void setTurn(Turn turn) {
+        this.turn = turn;
+    }
 
     public ArrayList<Card> getHand()
     {
         return hand;
     }
-
     public void setHand(ArrayList<Card> hand) {
         this.hand = hand;
     }
@@ -21,8 +29,14 @@ public class GameBean implements java.io.Serializable
     public double getMoney() {
         return money;
     }
-
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    public GameState getGs() {
+        return gs;
+    }
+    public void setGs(GameState gs) {
+        this.gs = gs;
     }
 }
