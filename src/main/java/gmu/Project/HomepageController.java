@@ -36,7 +36,6 @@ public class HomepageController {
 
     @PostMapping(value = "/register")
     public String registerPost (@ModelAttribute User user){
-        System.out.println(user);
         userService.save(user);
         return "redirect:/login";
     }
