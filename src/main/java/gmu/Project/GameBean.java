@@ -1,21 +1,23 @@
 package gmu.Project;
 
+import gmu.Project.model.User;
+
 import java.util.ArrayList;
 
 public class GameBean implements java.io.Serializable
 {
     private Card[] hand = null;
     private double money = 0.0;
-    private Turn turn = null;
+    private User user = null;
     private GameState gs = null;
 
     public GameBean(){}
 
-    public Turn getTurn() {
-        return turn;
+    public User getTurn() {
+        return user;
     }
-    public void setTurn(Turn turn) {
-        this.turn = turn;
+    public void setTurn(User user) {
+        this.user = user;
     }
 
     public Card[] getHand()
