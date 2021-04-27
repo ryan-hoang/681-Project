@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameBean implements java.io.Serializable
 {
-    private Hand hand = null;
+    private Card[] hand = null;
     private double money = 0.0;
     private Turn turn = null;
     private GameState gs = null;
@@ -18,11 +18,11 @@ public class GameBean implements java.io.Serializable
         this.turn = turn;
     }
 
-    public Hand getHand()
+    public Card[] getHand()
     {
         return hand;
     }
-    public void setHand(Hand hand) {
+    public void setHand(Card[] hand) {
         this.hand = hand;
     }
 

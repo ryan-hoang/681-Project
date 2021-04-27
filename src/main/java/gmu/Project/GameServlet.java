@@ -28,7 +28,21 @@ public class GameServlet extends HttpServlet
         */
 
         GameBean gb = new GameBean();
-        gb.setGs(GameState.SHOWHAND);
+        gb.setGs(GameState.BET);
+        Card ace = new Card(Card.Value.ACE, Card.Suit.CLUBS);
+        Card two = new Card(Card.Value.TWO, Card.Suit.HEARTS);
+        Card three = new Card(Card.Value.THREE, Card.Suit.DIAMONDS);
+        Card four = new Card(Card.Value.FOUR, Card.Suit.SPADES);
+        Card king = new Card(Card.Value.KING, Card.Suit.HEARTS);
+
+        Card[] hand = new Card[5];
+        hand[0] = ace;
+        hand[1] = two;
+        hand[2] = three;
+        hand[3] = four;
+        hand[4] = king;
+
+        gb.setHand(hand);
         HttpSession session = request.getSession();
         session.setAttribute("gamebean", gb);
 

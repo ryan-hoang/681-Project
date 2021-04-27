@@ -2,9 +2,113 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html>
 <head><title></title></head>
+<style>
+.maincontainer
+{
+  width:98%;
+  min-width:98%;
+  max-width:98%;
+  height:90%;
+  height:95vh;
+  min-height:95%;
+  overflow:hidden;
+  padding:1%;
+  margin:0;
+  display: -webkit-flex;
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+  align-self:auto;
+  align-items:flex-start;
+  align-content:flex-start;
+  background-color:grey;
+}
+
+.opponentarea
+{
+  width:98%;
+  min-width:98%;
+  max-width:98%;
+  height:46.25%;
+  min-height:46.25%;
+  overflow:hidden;
+  padding:1%;
+  margin:0;
+  background-color:GhostWhite;
+}
+
+.myarea
+{
+  width:98%;
+  min-width:98%;
+  max-width:98%;
+  height:46.25%;
+  min-height:46.25%;
+  overflow:hidden;
+  padding:1%;
+  margin:0;
+  background-color:CadetBlue;
+}
+
+.innercontainer {
+  display: grid;
+  grid-template-columns: repeat(6, 300px);
+  height: 400px;
+  width: 1900px;
+  gap: 10px;
+  grid-template-areas:
+    "a b c d e f";
+  align-content: end;
+}
+.item1 {
+  grid-area: a;
+}
+.item2 {
+  grid-area: b;
+}
+.item3 {
+  grid-area: c;
+}
+.item4 {
+  grid-area: d;
+}
+.item5 {
+  grid-area: e;
+}
+.item6 {
+  grid-area: f;
+}
+
+</style>
+
 <body>
 <div th:if="${session.gamebean.getGs().name() == 'BET'}">
-Bet
+
+    <div class="maincontainer">
+        <div class="opponentarea">
+            <img src="Cardback.png" width="260" height="400">
+            <img src="Cardback.png" width="260" height="400">
+            <img src="Cardback.png" width="260" height="400">
+            <img src="Cardback.png" width="260" height="400">
+            <img src="Cardback.png" width="260" height="400">
+        </div>
+        <div class="myarea">
+            <div class="innercontainer">
+                <div class ="item1">
+                <h1>Your Hand</h1>
+                    <button>Bet</button>
+                        <input type="text">
+                </div>
+                <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="260" height="400"> </div>
+                <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="260" height="400"> </div>
+                <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="260" height="400"> </div>
+                <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="260" height="400"> </div>
+                <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="260" height="400"> </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <div th:if="${session.gamebean.getGs().name() == 'DRAW'}">
 Draw
