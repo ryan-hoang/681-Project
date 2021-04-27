@@ -1,9 +1,11 @@
 package gmu.Project;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,6 +14,7 @@ public class GameServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        /*
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -22,5 +25,14 @@ public class GameServlet extends HttpServlet
         out.println("<h1>Test</h1>");
         out.println("<p>Simple servlet for testing.</p>");
         out.println("</body></html>");
+        */
+
+        GameBean gb = new GameBean();
+        gb.setGs(GameState.SHOWHAND);
+        HttpSession session = request.getSession();
+        session.setAttribute("gamebean", gb);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
+        requestDispatcher.forward(request,response);
     }
 }

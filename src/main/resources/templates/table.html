@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head><title></title></head>
+<body>
+<div th:if="${session.gamebean.getGs().name() == 'BET'}">
+Bet
+</div>
+<div th:if="${session.gamebean.getGs().name() == 'DRAW'}">
+Draw
+</div>
+
+<div th:if="${session.gamebean.getGs().name() == 'SHOWHAND'}">
+ShowHand
+</div>
+
+
+</body>
+</html>

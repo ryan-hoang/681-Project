@@ -11,7 +11,6 @@ public class Authority implements GrantedAuthority {
     private String authority;
     private User user;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {

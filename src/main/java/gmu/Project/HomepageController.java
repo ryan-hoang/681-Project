@@ -39,4 +39,8 @@ public class HomepageController {
         userService.save(user);
         return "redirect:/login";
     }
+
+    @RequestMapping(value = "/table", method=RequestMethod.GET)
+    public String gameView() { return "table"; }
+
 }
