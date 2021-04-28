@@ -1,4 +1,4 @@
-package gmu.Project.model;
+package gmu.Project;
 
 import java.io.Serializable;
 
