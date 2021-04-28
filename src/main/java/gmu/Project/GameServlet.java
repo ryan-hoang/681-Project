@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 public class GameServlet extends HttpServlet
 {
@@ -35,7 +35,7 @@ public class GameServlet extends HttpServlet
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
         User user = userRepo.findByUsername("admin");
-        System.out.println("User Obj: " + user.toString());
+        System.out.println(java.util.Calendar.getInstance().getTime());
 
         GameBean gb = new GameBean();
         gb.setGs(GameState.SHOWHAND);
@@ -67,7 +67,7 @@ public class GameServlet extends HttpServlet
         h[4] = t;
         gb.setOpponentHand(h);
 
-        gb.setWinner("Alex");
+        gb.setGameWinner("Alex");
         gb.setWinningHand(Hand.ROYALFLUSH);
 
         gb.setUser("admin");

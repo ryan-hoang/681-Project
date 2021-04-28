@@ -2,5 +2,5 @@ package gmu.Project;
 
 public enum GameState
 {
-    BET,DRAW,SHOWHAND
+    BET,DRAW,SHOWHAND,GAMEOVER
 }

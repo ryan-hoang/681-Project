@@ -2,22 +2,25 @@ package gmu.Project;
 
 public class GameBean implements java.io.Serializable
 {
-    private String winner = "";
-    private Hand winningHand = null;
-    private Card[] opponentHand = null;
-    private Card[] hand = null;
-    private double money = 0.0;
-    private String user = "";
-    private String turn = "";
-    private GameState gs = null;
+    private String handWinner = "";//
+    private Hand winningHand = null;//
+    private Card[] opponentHand = null;//
+    private Card[] hand = null;//
+    private int myMoney = 0;//
+    private int opponentMoney = 0;//
+    private String user = "";//
+    private String turn = "";//
+    private GameState gs = null;//
+    private String gameWinner = "";//
+    private String opponent = "";//
 
     public GameBean(){}
 
-    public String getWinner() {
-        return winner;
+    public String getHandWinner() {
+        return handWinner;
     }
-    public void setWinner(String winner) {
-        this.winner = winner;
+    public void setHandWinner(String handWinner) {
+        this.handWinner = handWinner;
     }
 
     public Hand getWinningHand() {
@@ -43,11 +46,18 @@ public class GameBean implements java.io.Serializable
         this.hand = hand;
     }
 
-    public double getMoney() {
-        return money;
+    public int getMyMoney() {
+        return myMoney;
     }
-    public void setMoney(double money) {
-        this.money = money;
+    public void setMyMoney(int money) {
+        this.myMoney = money;
+    }
+
+    public int getOpponentMoney() {
+        return opponentMoney;
+    }
+    public void setOpponentMoney(int opponentMoney) {
+        this.opponentMoney = opponentMoney;
     }
 
     public String getUser() {
@@ -69,5 +79,19 @@ public class GameBean implements java.io.Serializable
     }
     public void setGs(GameState gs) {
         this.gs = gs;
+    }
+
+    public String getGameWinner() {
+        return gameWinner;
+    }
+    public void setGameWinner(String gameWinner) {
+        this.gameWinner = gameWinner;
+    }
+
+    public String getOpponent() {
+        return opponent;
+    }
+    public void setOpponent(String opponent) {
+        this.opponent = opponent;
     }
 }

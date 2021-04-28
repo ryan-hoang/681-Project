@@ -84,112 +84,132 @@
 
 <body>
 <script> setTimeout(function(){window.location.reload(1);}, 5000); </script>
-<div th:if="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
-    <div th:if="${session.gamebean.getGs().name() == 'BET'}">
 
-        <div class="maincontainer">
-            <div class="opponentarea">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-            </div>
-            <div class="myarea">
-                <form>
-                    <div class="innercontainer">
-                        <div class ="item1">
-                        <h1>It's your turn to bet.</h1>
-                            <button type="submit">Bet</button>
-                                <input type="text">
-                        </div>
-                        <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
-                        <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
-                        <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> </div>
-                        <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> </div>
-                        <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> </div>
-                    </div>
-                </form>
+<div th:if="${session.gamebean.getGs().name() == 'GAMEOVER'}">
+    <div class="maincontainer">
+        <div class="opponentarea">
+            <div class="innercontainer">
+                <h1> <label th:text="${session.gamebean.getOpponent()} + '\'s hand.'"> </label> </h1>
             </div>
         </div>
-
-    </div>
-
-    <div th:if="${session.gamebean.getGs().name() == 'DRAW'}">
-        <div class="maincontainer">
-            <div class="opponentarea">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-                <img src="Cardback.png" width="200" height="350">
-            </div>
-            <div class="myarea">
-                <form>
-                    <div class="innercontainer">
-                            <div class ="item1">
-                                <h1>Discard up to 5 cards</h1>
-                                <button type="submit">Submit</button>
-                            </div>
-                            <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card0" name="card1" value="0"> </div>
-                            <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card1" name="card1" value="1"> </div>
-                            <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card2" name="card1" value="2"> </div>
-                            <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card3" name="card1" value="3"> </div>
-                            <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card4" name="card1" value="4"> </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div th:if="${session.gamebean.getGs().name() == 'SHOWHAND'}">
-        <div class="maincontainer">
-            <div class="opponentarea">
-                <div class="innercontainer">
-                    <h1> <label th:text="${session.gamebean.getWinner()} + '\'s hand.'"></label></h1>
-                    <div class="item2"><img th:src="@{${session.gamebean.getOpponentHand()[0].lookupFile()}}" width="200" height="350"> </div>
-                    <div class="item3"><img th:src="@{${session.gamebean.getOpponentHand()[1].lookupFile()}}" width="200" height="350"> </div>
-                    <div class="item4"><img th:src="@{${session.gamebean.getOpponentHand()[2].lookupFile()}}" width="200" height="350"> </div>
-                    <div class="item5"><img th:src="@{${session.gamebean.getOpponentHand()[3].lookupFile()}}" width="200" height="350"> </div>
-                    <div class="item6"><img th:src="@{${session.gamebean.getOpponentHand()[4].lookupFile()}}" width="200" height="350"> </div>
-                </div>
-            </div>
-            <div class="myarea">
-                    <div class="innercontainer">
-                        <div class ="item1">
-                            <h1> <label th:text="${session.gamebean.getWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
-                            <a href="/homepage"> Exit to menu.</a>
-                        </div>
-                        <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"></div>
-                        <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"></div>
-                        <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"></div>
-                        <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"></div>
-                        <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"></div>
-                    </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div th:unless="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
-    <div class="opponentarea">
-        <img src="Cardback.png" width="200" height="350">
-        <img src="Cardback.png" width="200" height="350">
-        <img src="Cardback.png" width="200" height="350">
-        <img src="Cardback.png" width="200" height="350">
-        <img src="Cardback.png" width="200" height="350">
-    </div>
-    <div class="myarea">
+        <div class="myarea">
             <div class="innercontainer">
                 <div class ="item1">
-                    <h1>Waiting for your turn.</h1>
+                    <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
                 </div>
-                <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
-                <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
-                <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> </div>
-                <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> </div>
-                <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> </div>
             </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div th:unless="${session.gamebean.getGs().name() == 'GAMEOVER'}">
+    <div th:if="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
+        <div th:if="${session.gamebean.getGs().name() == 'BET'}">
+            <div class="maincontainer">
+                <div class="opponentarea">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                </div>
+                <div class="myarea">
+                    <form>
+                        <div class="innercontainer">
+                            <div class ="item1">
+                            <h1>It's your turn to bet.</h1>
+                                <button type="submit">Bet</button>
+                                    <input type="text">
+                            </div>
+                            <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
+                            <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
+                            <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> </div>
+                            <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> </div>
+                            <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:if="${session.gamebean.getGs().name() == 'DRAW'}">
+            <div class="maincontainer">
+                <div class="opponentarea">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                    <img src="Cardback.png" width="200" height="350">
+                </div>
+                <div class="myarea">
+                    <form>
+                        <div class="innercontainer">
+                                <div class ="item1">
+                                    <h1>Discard up to 5 cards</h1>
+                                    <button type="submit">Submit</button>
+                                </div>
+                                <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card0" name="card1" value="0"> </div>
+                                <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card1" name="card1" value="1"> </div>
+                                <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card2" name="card1" value="2"> </div>
+                                <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card3" name="card1" value="3"> </div>
+                                <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card4" name="card1" value="4"> </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${session.gamebean.getGs().name() == 'SHOWHAND'}">
+            <div class="maincontainer">
+                <div class="opponentarea">
+                    <div class="innercontainer">
+                        <h1> <label th:text="${session.gamebean.getOpponent()} + '\'s hand.'"> </label> </h1>
+                        <div class="item2"><img th:src="@{${session.gamebean.getOpponentHand()[0].lookupFile()}}" width="200" height="350"> </div>
+                        <div class="item3"><img th:src="@{${session.gamebean.getOpponentHand()[1].lookupFile()}}" width="200" height="350"> </div>
+                        <div class="item4"><img th:src="@{${session.gamebean.getOpponentHand()[2].lookupFile()}}" width="200" height="350"> </div>
+                        <div class="item5"><img th:src="@{${session.gamebean.getOpponentHand()[3].lookupFile()}}" width="200" height="350"> </div>
+                        <div class="item6"><img th:src="@{${session.gamebean.getOpponentHand()[4].lookupFile()}}" width="200" height="350"> </div>
+                    </div>
+                </div>
+                <div class="myarea">
+                        <div class="innercontainer">
+                            <div class ="item1">
+                                <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
+                            </div>
+                            <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"></div>
+                            <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"></div>
+                            <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"></div>
+                            <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"></div>
+                            <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"></div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
+        <div class="opponentarea">
+            <img src="Cardback.png" width="200" height="350">
+            <img src="Cardback.png" width="200" height="350">
+            <img src="Cardback.png" width="200" height="350">
+            <img src="Cardback.png" width="200" height="350">
+            <img src="Cardback.png" width="200" height="350">
+        </div>
+        <div class="myarea">
+                <div class="innercontainer">
+                    <div class ="item1">
+                        <h1>Waiting for your turn.</h1>
+                    </div>
+                    <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
+                    <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
+                    <div class="item4"><img th:src="@{${session.gamebean.getHand()[2].lookupFile()}}" width="200" height="350"> </div>
+                    <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"> </div>
+                    <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"> </div>
+                </div>
+        </div>
     </div>
 </div>
 
