@@ -1,5 +1,10 @@
 package gmu.Project;
 
+import gmu.Project.model.User;
+import gmu.Project.repository.UserRepository;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +31,11 @@ public class GameServlet extends HttpServlet
         out.println("<p>Simple servlet for testing.</p>");
         out.println("</body></html>");
         */
+
+        WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
+        User user = userRepo.findByUsername("admin");
+        System.out.println("User Obj: " + user.toString());
 
         GameBean gb = new GameBean();
         gb.setGs(GameState.BET);
