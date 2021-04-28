@@ -1,5 +1,6 @@
 package gmu.Project.model;
 
+import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private String confirmPassword;
     private Set<Authority> authorities = new HashSet<>();
 
     @Id
@@ -24,6 +26,8 @@ public class User {
         this.id = id;
     }
 
+    @Column(unique = true)
+    @NotNull
     public String getUsername() {
         return username;
     }
@@ -38,6 +42,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
