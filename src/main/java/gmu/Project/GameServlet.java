@@ -38,7 +38,7 @@ public class GameServlet extends HttpServlet
         System.out.println("User Obj: " + user.toString());
 
         GameBean gb = new GameBean();
-        gb.setGs(GameState.BET);
+        gb.setGs(GameState.SHOWHAND);
         Card ace = new Card(Card.Value.ACE, Card.Suit.CLUBS);
         Card two = new Card(Card.Value.TWO, Card.Suit.HEARTS);
         Card three = new Card(Card.Value.THREE, Card.Suit.DIAMONDS);
@@ -53,6 +53,26 @@ public class GameServlet extends HttpServlet
         hand[4] = king;
 
         gb.setHand(hand);
+
+        Card a = new Card(Card.Value.ACE, Card.Suit.CLUBS);
+        Card k = new Card(Card.Value.KING, Card.Suit.CLUBS);
+        Card q = new Card(Card.Value.QUEEN, Card.Suit.CLUBS);
+        Card j = new Card(Card.Value.JACK, Card.Suit.CLUBS);
+        Card t = new Card(Card.Value.TEN, Card.Suit.CLUBS);
+        Card[] h = new Card[5];
+        h[0] = a;
+        h[1] = k;
+        h[2] = q;
+        h[3] = j;
+        h[4] = t;
+        gb.setOpponentHand(h);
+
+        gb.setWinner("Alex");
+        gb.setWinningHand(Hand.ROYALFLUSH);
+
+        gb.setUser("admin");
+        gb.setUserTurn("admin");
+
         HttpSession session = request.getSession();
         session.setAttribute("gamebean", gb);
 
