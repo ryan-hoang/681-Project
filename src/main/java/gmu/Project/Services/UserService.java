@@ -19,6 +19,7 @@ public class UserService {
     public User save (User user){
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setConfirmPassword(encodedPassword);
 
         Authority authority = new Authority();
         authority.setAuthority("ROLE_USER");
