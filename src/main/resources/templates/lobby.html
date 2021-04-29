@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pregame Lobby</title>
+</head>
+<script> setTimeout(function(){window.location.reload(1);}, 5000); </script>
+<style>
+    .box{
+        margin:0 auto;
+        width:350px;
+        padding:20px;
+        background:#f9f9f9;
+        border:2px solid #333;
+    }
+</style>
+<body>
+
+<div class="box">
+    <form action="/game">
+        <div th:if="${#strings.equals(session.game.getGameOwner(),session.username)}">
+            <div th:if="${session.game.getP2username() == ''}">
+                <h2>Waiting For Players...</h2>
+                <h3 th:text="'Player 1:' +${session.game.getP1username()}"></h3>
+                <h3 th:text="'Player 2:' +${session.game.getP2username()}"></h3>
+            </div>
+            <div th:unless="${session.game.getP2username() == ''}">
+                <h3 th:text="'Player 1:' +${session.game.getP1username()}"></h3>
+                <h3 th:text="'Player 2:' +${session.game.getP2username()}"></h3>
+                <button type="submit">Start Game</button>
+            </div>
+        </div>
+        <div th:unless="${#strings.equals(session.game.getGameOwner(),session.username)}">
+            <h2>Waiting For Host to Start Game.</h2>
+            <h3 th:text="'Player 1:' + ${session.game.getP1username()}"></h3>
+            <h3 th:text="'Player 2:' + ${session.game.getP2username()}"></h3>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

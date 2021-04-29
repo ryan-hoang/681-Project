@@ -19,23 +19,23 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gameId;
-    private String p1username;
-    private String p2username;
+    private String p1username = "";
+    private String p2username = "";
     private Integer p1balance;
     private Integer p2balance;
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private GameState state;
     private String turn;
     private LocalDateTime lastMove;
     private String gameWinner;
     private String handWinner;
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private Hand winningHand;
     @ElementCollection
     private Collection<Card> p2Hand;
     @ElementCollection
     private Collection<Card> p1Hand;
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private Status status;
     private String gameOwner;
 

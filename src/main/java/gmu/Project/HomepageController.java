@@ -12,12 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
@@ -46,6 +44,11 @@ public class HomepageController {
     public String register(ModelMap model){
         model.put("user", new User());
         return "Register";
+    }
+
+    @GetMapping(value="/lobby")
+    public String pregame() {
+        return "lobby";
     }
 
     @GetMapping(value="/homepage")
