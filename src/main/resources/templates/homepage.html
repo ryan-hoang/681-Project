@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>Poker Homepage</title>
 </head>
+<style>
+    .box{
+        margin:0 auto;
+        width:350px;
+        padding:20px;
+        background:#f9f9f9;
+        border:2px solid #333;
+    }
+</style>
 <body>
     <h1>Poker Homepage</h1>
     <form action="/logout" method="post">
@@ -11,5 +20,18 @@
         <button type="submit">Logout</button>
     </form>
     <a href="/game">Game</a>
+
+<div class ="box">
+    <form>
+    <select name ="games" id="games">
+        <option value = "">Select Game Lobby to Join</option>
+        <option th:each="game : ${homepagebean.getGames()}"
+                th:value ="${game.getGameId()}"
+                th:text="${game.gameOwner}"></option>
+    </select>
+        <button type="submit">Join Game</button>
+    </form>
+</div>
+
 </body>
 </html>

@@ -2,7 +2,9 @@ package gmu.Project;
 
 import gmu.Project.Services.UserService;
 import gmu.Project.WebSecurity.RegistrationValidator;
+import gmu.Project.model.Game;
 import gmu.Project.model.User;
+import gmu.Project.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Controller
 public class HomepageController {
@@ -20,6 +26,9 @@ public class HomepageController {
 
     @Autowired
     private RegistrationValidator registrationValidator;
+
+    @Autowired
+    private GameRepository gameRepository;
 
     @GetMapping(value="/")
     public String rootView () {
@@ -38,8 +47,14 @@ public class HomepageController {
     }
 
     @GetMapping(value="/homepage")
-    public String homepage(){
-        return "homepage";
+    public ModelAndView homepage(){
+        Collection<Game> games = gameRepository.getPendingGames();
+        HomepageBean hb = new HomepageBean();
+        hb.setGames(games);
+
+        ModelAndView mv = new ModelAndView("homepage");
+        mv.addObject("homepagebean",hb);
+        return mv;
     }
 
     @PostMapping(value = "/register")

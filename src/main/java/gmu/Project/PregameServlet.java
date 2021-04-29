@@ -34,3 +34,7 @@ public class PregameServlet extends HttpServlet
         requestDispatcher.forward(req,resp);
     }
 }
+
+
+//from homepage create game -> here
+//from homepage join game -> here

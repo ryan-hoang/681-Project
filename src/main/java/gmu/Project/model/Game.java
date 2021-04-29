@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 @Entity
 @Table(name = "game")
@@ -22,20 +23,28 @@ public class Game {
     private String p2username;
     private Integer p1balance;
     private Integer p2balance;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private GameState state;
     private String turn;
     private LocalDateTime lastMove;
     private String gameWinner;
     private String handWinner;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Hand winningHand;
     @ElementCollection
-    private ArrayList<Card> p2Hand;
+    private Collection<Card> p2Hand;
     @ElementCollection
-    private ArrayList<Card> p1Hand;
-    @Enumerated
+    private Collection<Card> p1Hand;
+    @Enumerated(EnumType.STRING)
     private Status status;
+    private String gameOwner;
+
+    public String getGameOwner() {
+        return gameOwner;
+    }
+    public void setGameOwner(String gameOwner) {
+        this.gameOwner = gameOwner;
+    }
 
     public Status isStatus() {
         return status;
@@ -59,14 +68,14 @@ public class Game {
     }
 
     public ArrayList<Card> getP2Hand() {
-        return p2Hand;
+        return (ArrayList<Card>) p2Hand;
     }
     public void setP2Hand(Card[] p2Hand) {
         this.p2Hand = new ArrayList<Card>(Arrays.asList(p2Hand));
     }
 
     public ArrayList<Card> getP1Hand() {
-        return p1Hand;
+        return (ArrayList<Card>) p1Hand;
     }
     public void setP1Hand(Card[] p1Hand) {
         this.p1Hand = new ArrayList<Card>(Arrays.asList(p1Hand));
