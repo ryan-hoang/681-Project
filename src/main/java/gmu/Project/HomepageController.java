@@ -6,6 +6,8 @@ import gmu.Project.model.Game;
 import gmu.Project.model.User;
 import gmu.Project.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -36,8 +38,31 @@ public class HomepageController {
     }
 
     @GetMapping(value="/login")
-    public String login(Model model){
-        return "login";
+    public ModelAndView login(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated())
+        {
+            Collection<Game> games = gameRepository.getPendingGames();
+            HomepageBean hb = new HomepageBean();
+            hb.setGames(games);
+
+            String username = "";
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails)principal).getUsername();
+            } else
+            {
+                username = principal.toString();
+            }
+
+            ModelAndView mv = new ModelAndView("homepage");
+            mv.addObject("username",username);
+            mv.addObject("homepagebean",hb);
+            return mv;
+        }
+        else {
+            return new ModelAndView("login");
+        }
     }
 
     @GetMapping(value="/register")

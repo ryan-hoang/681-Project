@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
+
 
 public class PregameServlet extends HttpServlet
 {
@@ -39,10 +39,15 @@ public class PregameServlet extends HttpServlet
 
         if(inGame)
         {
-            Game gm = gameRepo.findByGameId(user.getCurrentGame());
+            Game gm;
+            do {
+                System.out.println("getting new game instance from db GameID:" + user.getCurrentGame());
+                gm = gameRepo.findByGameId(user.getCurrentGame());
+            }while(gm ==null);
             HttpSession session = request.getSession();
             session.setAttribute("game", gm);
-            response.sendRedirect(request.getContextPath() + "/lobby");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("lobby");
+            requestDispatcher.forward(request,response);
             System.out.println("InGame Branch");
         }
         else
@@ -69,7 +74,8 @@ public class PregameServlet extends HttpServlet
                 HttpSession session = request.getSession();
                 session.setAttribute("game", tmp);
                 session.setAttribute("username", username);
-                response.sendRedirect(request.getContextPath() + "/lobby");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("lobby");
+                requestDispatcher.forward(request,response);
             }
             else if (requestType.equals("joinGame"))
             {
@@ -81,13 +87,16 @@ public class PregameServlet extends HttpServlet
                     return;
                 }
                 join.setP2username(username);
+                gameRepo.save(join);
+                user.setCurrentGame(gameID);
                 user.setInGame(true);
                 userRepo.save(user);
 
                 HttpSession session = request.getSession();
                 session.setAttribute("game", join);
                 session.setAttribute("username", username);
-                response.sendRedirect(request.getContextPath() + "/lobby");
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("lobby");
+                requestDispatcher.forward(request,response);
             }
         }
     }
