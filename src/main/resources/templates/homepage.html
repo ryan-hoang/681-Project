@@ -22,10 +22,12 @@
     <a href="/game">Game</a>
 
 <div class ="box">
-    <form>
-        <input type="hidden" name="joinGame" value="joinGame">
+    <form action="/pregame" method="get">
+        <input type="hidden" name="requestType" value="joinGame">
+        <input type="hidden" name="username" th:value="${username}">
+        <h2>Join A Game.</h2>
         <select name ="games" id="games">
-            <option value = "">Select Game Lobby to Join</option>
+            <option value = "-1">Select Game Lobby to Join</option>
             <option th:each="game : ${homepagebean.getGames()}"
                     th:value ="${game.getGameId()}"
                     th:text="${game.gameOwner}"></option>
@@ -35,9 +37,10 @@
 </div>
 
 <div class="box">
-    <form action="/pregame">
-        <input type="hidden" name="createGame" value="createGame">
-        <h1>Create a new game for others to join.</h1>
+    <form action="/pregame" method="get">
+        <input type="hidden" name="requestType" value="createGame">
+        <input type="hidden" name="username" th:value="${username}">
+        <h2>Create a new game for others to join.</h2>
         <button type="submit">Create Game</button>
     </form>
 </div>

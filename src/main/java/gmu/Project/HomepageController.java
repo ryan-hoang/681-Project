@@ -6,6 +6,8 @@ import gmu.Project.model.Game;
 import gmu.Project.model.User;
 import gmu.Project.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -52,7 +54,17 @@ public class HomepageController {
         HomepageBean hb = new HomepageBean();
         hb.setGames(games);
 
+        String username = "";
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else
+        {
+            username = principal.toString();
+        }
+
         ModelAndView mv = new ModelAndView("homepage");
+        mv.addObject("username",username);
         mv.addObject("homepagebean",hb);
         return mv;
     }
