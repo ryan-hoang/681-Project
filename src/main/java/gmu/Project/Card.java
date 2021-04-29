@@ -27,6 +27,32 @@ public class Card implements Serializable
         }
     }
 
+    public enum CardValue
+    {
+        ACE(14),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        JACK(11),
+        QUEEN(12),
+        KING(13);
+
+        private int cardValue;
+        CardValue(int value) {
+            this.cardValue = value;
+        }
+        public int getCardValue(){
+            return cardValue;
+        }
+    }
+
+
     public enum Suit
     {
         CLUBS("C"),
@@ -39,14 +65,20 @@ public class Card implements Serializable
         {
             this.value = value;
         }
+        public char getSuit(){
+            char[] val = value.toCharArray();
+            return val[0]; //returns single character for sorting
+        }
     }
 
     public final Value value;
     public final Suit suit;
+    public final CardValue cardValue;
 
-    public Card(Value value, Suit suit)
+    public Card(Value value, CardValue cardValue, Suit suit)
     {
         this.value = value;
+        this.cardValue = cardValue;
         this.suit = suit;
     }
 
