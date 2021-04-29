@@ -2,6 +2,7 @@ package gmu.Project;
 
 import gmu.Project.model.Game;
 import gmu.Project.repository.GameRepository;
+import gmu.Project.repository.LogRepository;
 import gmu.Project.repository.UserRepository;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -20,27 +21,32 @@ public class PregameServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        final int STARTING_BALANCE = 10;
+
         String requestType = request.getParameter("requestType");
         String username = request.getParameter("username");
+        Long gameID = Long.parseLong(request.getParameter("games"));
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
         GameRepository gameRepo = (GameRepository) springContext.getBean("gameRepository");
+        LogRepository logRepo = (LogRepository) springContext.getBean("logRepository");
 
-
-        if(requestType.equals("createGame"))//Receive request from user to create game. Show user the lobby page.
+        if(requestType.equals("createGame") && gameRepo.getMyActiveGame(username).size() == 0)//Receive request from user to create game. Show user the lobby page.
         {
             Game g = new Game();
             g.setGameOwner(username);
+            g.setP1username(username);
+            g.setP1balance(STARTING_BALANCE);
+            g.setP2balance(STARTING_BALANCE);
+            g.setTurn(username);
             g.setStatus(Status.PREGAME);
-
+            gameRepo.save(g);
         }
         else if(requestType.equals("joinGame"))
         {
 
+
         }
-
-
-
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
