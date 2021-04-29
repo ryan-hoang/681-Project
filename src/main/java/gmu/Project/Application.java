@@ -26,4 +26,11 @@ public class Application {
 		return srb;
 	}
 
+	@Bean
+	ServletRegistrationBean pregameServletRegistration () {
+		ServletRegistrationBean srb = new ServletRegistrationBean();
+		srb.setServlet(new PregameServlet());
+		srb.setUrlMappings(Arrays.asList("/pregame"));
+		return srb;
+	}
 }
