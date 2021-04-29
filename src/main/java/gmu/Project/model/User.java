@@ -14,6 +14,8 @@ public class User {
     private String username;
     private String password;
     private String confirmPassword;
+    private boolean inGame;
+    private Long currentGame;
     private Set<Authority> authorities = new HashSet<>();
 
     @Id
@@ -21,9 +23,22 @@ public class User {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCurrentGame() {
+        return currentGame;
+    }
+    public void setCurrentGame(Long currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 
     @Column(unique = true)

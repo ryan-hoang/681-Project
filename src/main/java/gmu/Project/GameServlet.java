@@ -35,7 +35,7 @@ public class GameServlet extends HttpServlet
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
         User user = userRepo.findByUsername("admin");
-        System.out.println(java.util.Calendar.getInstance().getTime());
+        //System.out.println(java.util.Calendar.getInstance().getTime());
 
         GameBean gb = new GameBean();
         gb.setGs(GameState.SHOWHAND);

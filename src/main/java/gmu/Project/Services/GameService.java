@@ -23,7 +23,7 @@ public class GameService
         return gameRepository.getPendingGames();
     }
 
-    public Collection<Game> getMyActiveGame(String user)
+    public Game getMyActiveGame(String user)
     {
         return gameRepository.getMyActiveGame(user);
     }
@@ -37,4 +37,6 @@ public class GameService
     {
         return gameRepository.findByGameId(id);
     }
+
+    public boolean hasPendingGame(String user) { return gameRepository.hasPendingGame(user) == 1 ? true : false; }
 }
