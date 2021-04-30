@@ -83,7 +83,7 @@
 </style>
 
 <body>
-<script> setTimeout(function(){window.location.reload(1);}, 5000); </script>
+<script> setTimeout(function(){window.location.href= '/game'}, 5000); </script>
 
 <div th:if="${session.gamebean.getGs().name() == 'GAMEOVER'}">
     <div class="maincontainer">
@@ -101,15 +101,13 @@
         </div>
     </div>
 </div>
-
-
 <div th:unless="${session.gamebean.getGs().name() == 'GAMEOVER'}">
     <div th:if="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
-        <div th:if="${session.gamebean.getGs().name() == 'BET'}">
+        <div th:if="${session.gamebean.getGs().name() == 'BETONE' or session.gamebean.getGs().name() == 'BETTWO'}">
             <div class="maincontainer">
                 <div class="opponentarea">
                     <div class="innercontainer">
-                        <div class="item1"> <span th:text="'Opponent\'s' + ${session.gamebean.getOpponentMoney()}"> </span></div>
+                        <div class="item1"> <span th:text="'Opponent\'s Money:' + ${session.gamebean.getOpponentMoney()}"> </span></div>
                         <div class="item2"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item3"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item4"><img src="Cardback.png" width="200" height="350"></div>
@@ -118,12 +116,13 @@
                     </div>
                 </div>
                 <div class="myarea">
-                    <form action="/game">
+                    <form action="/game" method="post">
+                        <input type="hidden" name = "requestType" value="betone">
                         <div class="innercontainer">
                             <div class ="item1">
                             <h1>It's your turn to bet.</h1>
                                 <button type="submit">Bet</button>
-                                    <input type="text">
+                                    <input type="text" name="betamount">
                                     <span th:text="'Your Cash: ' + ${session.gamebean.getMyMoney()}"></span>
                             </div>
                             <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>

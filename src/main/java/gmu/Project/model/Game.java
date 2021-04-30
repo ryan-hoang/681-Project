@@ -23,7 +23,7 @@ public class Game {
     @Enumerated
     private GameState state;
     private String turn;
-    private LocalDateTime lastMove;
+    private LocalDateTime lastMoveTime;
     private String gameWinner;
     private String handWinner;
     @Enumerated
@@ -38,6 +38,14 @@ public class Game {
     private int currentPot;
     @ElementCollection
     private Collection<Card> deck;
+    private String lastMove;
+
+    public String getLastMove() {
+        return lastMove;
+    }
+    public void setLastMove(String lastMove) {
+        this.lastMove = lastMove;
+    }
 
     public Collection<Card> getDeck() {
         return deck;
@@ -60,7 +68,7 @@ public class Game {
         this.gameOwner = gameOwner;
     }
 
-    public Status isStatus() {
+    public Status getStatus() {
         return status;
     }
     public void setStatus(Status status) {
@@ -81,18 +89,18 @@ public class Game {
         this.winningHand = winningHand;
     }
 
-    public ArrayList<Card> getP2Hand() {
-        return (ArrayList<Card>) p2Hand;
+    public Collection<Card> getP2Hand() {
+        return p2Hand;
     }
-    public void setP2Hand(Card[] p2Hand) {
-        this.p2Hand = new ArrayList<Card>(Arrays.asList(p2Hand));
+    public void setP2Hand(ArrayList<Card> p2Hand) {
+        this.p2Hand = p2Hand;
     }
 
-    public ArrayList<Card> getP1Hand() {
-        return (ArrayList<Card>) p1Hand;
+    public Collection<Card> getP1Hand() {
+        return p1Hand;
     }
-    public void setP1Hand(Card[] p1Hand) {
-        this.p1Hand = new ArrayList<Card>(Arrays.asList(p1Hand));
+    public void setP1Hand(ArrayList<Card> p1Hand) {
+        this.p1Hand = p1Hand;
     }
 
     public Long getGameId() {
@@ -144,11 +152,11 @@ public class Game {
         this.turn = turn;
     }
 
-    public LocalDateTime getLastMove() {
-        return lastMove;
+    public LocalDateTime getLastMoveTime() {
+        return lastMoveTime;
     }
-    public void setLastMove(LocalDateTime lastMove) {
-        this.lastMove = lastMove;
+    public void setLastMoveTime(LocalDateTime lastMove) {
+        this.lastMoveTime = lastMove;
     }
 
     public String getGameWinner() {

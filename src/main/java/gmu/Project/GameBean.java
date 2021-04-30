@@ -1,5 +1,7 @@
 package gmu.Project;
 
+import gmu.Project.model.GameMove;
+
 public class GameBean implements java.io.Serializable
 {
     private String handWinner = "";//
@@ -13,8 +15,16 @@ public class GameBean implements java.io.Serializable
     private GameState gs = null;//
     private String gameWinner = "";//
     private String opponent = "";//
+    private String lastMove = "";
 
     public GameBean(){}
+
+    public String getLastMove() {
+        return lastMove;
+    }
+    public void setLastMove(String lastMove) {
+        this.lastMove = lastMove;
+    }
 
     public String getHandWinner() {
         return handWinner;

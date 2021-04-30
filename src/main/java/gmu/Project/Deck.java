@@ -5,11 +5,10 @@ import java.util.ArrayList;
 
 public class Deck
 {
-    private SecureRandom rand;
-    private ArrayList<Card> deck;
+    private SecureRandom rand = new SecureRandom();;
+    private ArrayList<Card> deck = new ArrayList<Card>();
     public Deck()
     {
-        rand = new SecureRandom();
 
         Card.CardValue[] cv = new Card.CardValue[]{
                     Card.CardValue.ACE,
@@ -41,6 +40,24 @@ public class Deck
                 deck.add(new Card(value,suit));
             }
         }
+    }
+
+    public Deck(ArrayList<Card> deck)
+    {
+        this.deck = deck;
+    }
+
+    public Deck(Card[] deck)
+    {
+        for (Card c : deck)
+        {
+            this.deck.add(c);
+        }
+    }
+
+    public ArrayList<Card> getDeck()
+    {
+        return deck;
     }
 
     public void returnCards(ArrayList<Card> cards)

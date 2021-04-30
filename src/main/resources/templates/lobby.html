@@ -16,8 +16,12 @@
 </style>
 <body>
 
+<div th:if="${session.game.getStatus().name() == 'ACTIVE'}">
+    <script> setTimeout(function(){window.location.href= '/game'}, 1000); </script>
+</div>
+
 <div class="box">
-    <form action="/game">
+    <form action="/game" method="post">
         <div th:if="${#strings.equals(session.game.getGameOwner(),session.username)}">
             <div th:if="${session.game.getP2username() == ''}">
                 <h2>Waiting For Players...</h2>
@@ -26,8 +30,11 @@
             </div>
             <div th:unless="${session.game.getP2username() == ''}">
                 <h2>Click "Start Game" to Begin!</h2>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="hidden" name = "gameID" th:value="${session.game.getGameId()}">
                 <input type="hidden" name = "requestType" value="start">
+                <input type="hidden" name = "playerOne"   th:value="${session.username}">
+                <input type="hidden" name = "playerTwo"   th:value="${session.game.getP2username()}">
                 <h3 th:text="'Player 1:' +${session.game.getP1username()}"></h3>
                 <h3 th:text="'Player 2:' +${session.game.getP2username()}"></h3>
                 <button type="submit">Start Game</button>

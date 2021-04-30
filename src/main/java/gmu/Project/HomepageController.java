@@ -110,7 +110,7 @@ public class HomepageController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/table", method=RequestMethod.GET)
+    @RequestMapping(value = "/table")
     public String gameView() { return "table"; }
 
 }

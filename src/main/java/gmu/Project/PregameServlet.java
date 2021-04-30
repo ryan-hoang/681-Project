@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 
 public class PregameServlet extends HttpServlet
@@ -63,6 +63,7 @@ public class PregameServlet extends HttpServlet
                     g.setP2balance(STARTING_BALANCE);
                     g.setTurn(username);
                     g.setStatus(Status.PREGAME);
+                    g.setDeck(new Deck().getDeck());
                     gameRepo.save(g);
                 }
 
@@ -99,14 +100,6 @@ public class PregameServlet extends HttpServlet
                 requestDispatcher.forward(request,response);
             }
         }
-    }
-
-    //Start game, forward to game servlet.
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("game");
-        requestDispatcher.forward(req,resp);
     }
 
 }

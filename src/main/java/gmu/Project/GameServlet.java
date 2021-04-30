@@ -1,9 +1,11 @@
 package gmu.Project;
 
 import gmu.Project.model.Game;
-import gmu.Project.model.User;
+import gmu.Project.model.GameMove;
 import gmu.Project.repository.GameRepository;
 import gmu.Project.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class GameServlet extends HttpServlet
@@ -25,7 +28,31 @@ public class GameServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         //Construct game bean and redirect to table
+        WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        GameRepository gameRepo = (GameRepository) springContext.getBean("gameRepository");
+        UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
 
+        String requestType = request.getParameter("requestType");
+
+        String username = "";
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(principal instanceof UserDetails)
+        {username = ((UserDetails)principal).getUsername();}
+        else
+        {username = principal.toString();}
+
+
+        Long gameID = userRepo.findByUsername(username).getCurrentGame();
+        Game game = gameRepo.findByGameId(gameID);
+        Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
+
+        GameBean gb = generateLatestBean(game,username);
+        HttpSession session = request.getSession();
+        session.setAttribute("gamebean", gb);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
+        requestDispatcher.forward(request,response);
 
         /*
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
@@ -90,12 +117,39 @@ public class GameServlet extends HttpServlet
         String ID = request.getParameter("gameID");
         Long gameID = Long.parseLong(ID);
         Game game = gameRepo.findByGameId(gameID);
+        Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
+
+        String username = "";
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(principal instanceof UserDetails)
+        {username = ((UserDetails)principal).getUsername();}
+        else
+        {username = principal.toString();}
+
 
         switch(requestType)
         {
             case "start": // form action from the pregame lobby start button
+                game.setStatus(Status.ACTIVE);
+                game.setState(GameState.BETONE);
+                ArrayList<Card> p1Hand = deck.deal(5);
+                ArrayList<Card> p2Hand = deck.deal(5);
+                game.setP1Hand(p1Hand);
+                game.setP2Hand(p2Hand);
+                gameRepo.save(game);
+
+                GameBean gb = generateLatestBean(game,username);
+
+                HttpSession session = request.getSession();
+                session.setAttribute("gamebean", gb);
+
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
+                requestDispatcher.forward(request,response);
                 break;
             case "betone": //form action from first round bet in table.html
+                String s = request.getParameter("betamount");
+
                 break;
             case "draw": // form action from draw form in table.html
                 break;
@@ -126,5 +180,42 @@ public class GameServlet extends HttpServlet
             default:
                 return GameState.GAMEOVER;
         }
+    }
+
+    private GameBean generateLatestBean(Game game,String username)
+    {
+        GameBean gb = new GameBean();
+        gb.setHandWinner(game.getHandWinner());
+        gb.setWinningHand(game.getWinningHand());
+
+        if(game.getP1username().equals(username))
+        {
+
+            gb.setOpponentHand(game.getP1Hand().toArray(new Card[0]));  //them
+            gb.setHand(game.getP1Hand().toArray(new Card[0]));          //me
+            gb.setMyMoney(game.getP1balance());                         //me
+            gb.setOpponentMoney(game.getP2balance());                   //them
+            gb.setUser(game.getP1username());                           //me
+            gb.setOpponent(game.getP2username());                       //them
+        }
+        else
+        {
+            gb.setOpponentHand(game.getP1Hand().toArray(new Card[0]));  //them
+            gb.setHand(game.getP2Hand().toArray(new Card[0]));          //me
+            gb.setMyMoney(game.getP2balance());                         //me
+            gb.setOpponentMoney(game.getP1balance());                   //them
+            gb.setUser(game.getP2username());                           //me
+            gb.setOpponent(game.getP1username());                       //them
+        }
+
+        gb.setUserTurn(game.getTurn());
+
+        gb.setGs(game.getState());
+
+        gb.setGameWinner(game.getGameWinner());
+
+        gb.setLastMove(game.getLastMove());
+
+        return gb;
     }
 }
