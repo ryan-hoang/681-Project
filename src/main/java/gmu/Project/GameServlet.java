@@ -149,7 +149,23 @@ public class GameServlet extends HttpServlet
                 break;
             case "betone": //form action from first round bet in table.html
                 String s = request.getParameter("betamount");
+                int betAmount = Integer.parseInt(s);
+                if(betAmount < 0 || betAmount > game.getP1balance()){
+                    //throw error maybe
+                    break;
+                }
+                int prevBet = betAmount;
+                game.setP1balance(game.getP1balance() - betAmount);
+                game.setCurrentPot(betAmount);
 
+
+                GameBean gb = generateLatestBean(game,username);
+
+                HttpSession session = request.getSession();
+                session.setAttribute("gamebean", gb);
+
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
+                requestDispatcher.forward(request,response);
                 break;
             case "draw": // form action from draw form in table.html
                 break;
