@@ -4,6 +4,7 @@ import gmu.Project.model.GameMove;
 
 public class GameBean implements java.io.Serializable
 {
+    private Long gameID;
     private String handWinner = "";//
     private Hand winningHand = null;//
     private Card[] opponentHand = null;//
@@ -18,6 +19,14 @@ public class GameBean implements java.io.Serializable
     private String lastMove = "";
 
     public GameBean(){}
+
+    public Long getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(Long gameID) {
+        this.gameID = gameID;
+    }
 
     public String getLastMove() {
         return lastMove;

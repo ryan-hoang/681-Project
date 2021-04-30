@@ -39,6 +39,7 @@ public class Game {
     @ElementCollection
     private Collection<Card> deck;
     private String lastMove;
+    private int prevBet;
 
     public String getLastMove() {
         return lastMove;
@@ -165,4 +166,7 @@ public class Game {
     public void setGameWinner(String winner) {
         this.gameWinner = gameWinner;
     }
+
+    public int getPrevBet() { return prevBet; }
+    public void setPrevBet(int prevBet) { this.prevBet = prevBet; }
 }

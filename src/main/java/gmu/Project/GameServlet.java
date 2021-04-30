@@ -132,32 +132,58 @@ public class GameServlet extends HttpServlet
                 ArrayList<Card> p2Hand = deck.deal(5);
                 game.setP1Hand(p1Hand);
                 game.setP2Hand(p2Hand);
+                game.setPrevBet(-1);
                 gameRepo.save(game);
 
                 goToTable(game,username,request,response);
                 break;
-            case "betone": //form action from first round bet in table.html
+            case "BETONE": //form action from first round bet in table.html
                 String s = request.getParameter("betamount");
                 int betAmount = Integer.parseInt(s);
-                if(betAmount < 0 || betAmount > game.getP1balance()){
-                    //throw error maybe
+                if (betAmount < 0 || betAmount < game.getPrevBet() || betAmount > game.getP1balance()) {
+                    //throw error "Call or Raise"
                     break;
                 }
-                int prevBet = betAmount;
-                game.setP1balance(game.getP1balance() - betAmount);
-                game.setCurrentPot(betAmount);
+                game.setPrevBet(betAmount); //Previous bet for checking
+                game.setCurrentPot(game.getCurrentPot() + betAmount); //Update current pot
 
-
-                goToTable(game,username,request,response);
+                if(username.equals(game.getP1username())) {
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
+                    game.setTurn(game.getP2username()); //Changing turns
+                    if(betAmount == game.getPrevBet()){ //Check to see if they are calling or "Checking" both bet 0
+                        game.setLastMove(username + " called " + betAmount);
+                        game.setState(getNextState(game.getState()));
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    game.setLastMove(username + " bet " + betAmount);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
+                if(username.equals(game.getP2username())) {
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
+                    game.setTurn(game.getP1username()); //Changing turns
+                    if(betAmount == game.getPrevBet()){  //Check to see if they are calling or "Checking" both bet 0
+                        game.setLastMove(username + " called " + betAmount);
+                        game.setState(getNextState(game.getState()));
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    game.setLastMove(username + " bet " + betAmount);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
                 break;
-            case "draw": // form action from draw form in table.html
+            case "DRAW": // form action from draw form in table.html
                 break;
-            case "bettwo":// form action from second round bet in table.html
+            case "BETTWO":// form action from second round bet in table.html
                 break;
-            case "showhand":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
+            case "SHOWHAND":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
                 //check if anyone is broke here and end game by sending a bean with the gameover state.
                 break;
-            case "gameover": // form acton, ok button to end game, cleanup game and exit to homepage
+            case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
                 break;
 
         }
@@ -186,7 +212,7 @@ public class GameServlet extends HttpServlet
         GameBean gb = new GameBean();
         gb.setHandWinner(game.getHandWinner());
         gb.setWinningHand(game.getWinningHand());
-
+        gb.setGameID(game.getGameId());
         if(game.getP1username().equals(username))
         {
 
