@@ -47,12 +47,7 @@ public class GameServlet extends HttpServlet
         Game game = gameRepo.findByGameId(gameID);
         Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
 
-        GameBean gb = generateLatestBean(game,username);
-        HttpSession session = request.getSession();
-        session.setAttribute("gamebean", gb);
-
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
-        requestDispatcher.forward(request,response);
+        goToTable(game,username,request,response);
 
         /*
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
@@ -139,13 +134,7 @@ public class GameServlet extends HttpServlet
                 game.setP2Hand(p2Hand);
                 gameRepo.save(game);
 
-                GameBean gb = generateLatestBean(game,username);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("gamebean", gb);
-
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
-                requestDispatcher.forward(request,response);
+                goToTable(game,username,request,response);
                 break;
             case "betone": //form action from first round bet in table.html
                 String s = request.getParameter("betamount");
@@ -159,13 +148,7 @@ public class GameServlet extends HttpServlet
                 game.setCurrentPot(betAmount);
 
 
-                GameBean gb = generateLatestBean(game,username);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("gamebean", gb);
-
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
-                requestDispatcher.forward(request,response);
+                goToTable(game,username,request,response);
                 break;
             case "draw": // form action from draw form in table.html
                 break;
@@ -234,4 +217,14 @@ public class GameServlet extends HttpServlet
 
         return gb;
     }
+
+    private void goToTable(Game game, String username, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        GameBean gb = generateLatestBean(game,username);
+        HttpSession session = request.getSession();
+        session.setAttribute("gamebean", gb);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
+        requestDispatcher.forward(request,response);
+    }
+
 }
