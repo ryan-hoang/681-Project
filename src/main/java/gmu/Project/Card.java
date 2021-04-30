@@ -4,48 +4,28 @@ import java.io.Serializable;
 
 public class Card implements Serializable
 {
-    public enum Value
-    {
-        ACE("A"),
-        TWO("2"),
-        THREE("3"),
-        FOUR("4"),
-        FIVE("5"),
-        SIX("6"),
-        SEVEN("7"),
-        EIGHT("8"),
-        NINE("9"),
-        TEN("10"),
-        JACK("J"),
-        QUEEN("Q"),
-        KING("K");
-
-        private final String filename;
-        private Value(String filename)
-        {
-            this.filename = filename;
-        }
-    }
 
     public enum CardValue
     {
-        ACE(14),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5),
-        SIX(6),
-        SEVEN(7),
-        EIGHT(8),
-        NINE(9),
-        TEN(10),
-        JACK(11),
-        QUEEN(12),
-        KING(13);
+        ACE(14,"A"),
+        TWO(2,"2"),
+        THREE(3,"3"),
+        FOUR(4,"4"),
+        FIVE(5,"5"),
+        SIX(6,"6"),
+        SEVEN(7,"7"),
+        EIGHT(8,"8"),
+        NINE(9,"9"),
+        TEN(10,"10"),
+        JACK(11,"J"),
+        QUEEN(12,"Q"),
+        KING(13,"K");
 
         private int cardValue;
-        CardValue(int value) {
+        private final String filename;
+        CardValue(int value, String filename) {
             this.cardValue = value;
+            this.filename = filename;
         }
         public int getCardValue(){
             return cardValue;
@@ -71,25 +51,23 @@ public class Card implements Serializable
         }
     }
 
-    public final Value value;
     public final Suit suit;
     public final CardValue cardValue;
 
-    public Card(Value value, CardValue cardValue, Suit suit)
+    public Card(CardValue cardValue, Suit suit)
     {
-        this.value = value;
         this.cardValue = cardValue;
         this.suit = suit;
     }
 
     public String toString ()
     {
-        return value + " of " + suit;
+        return cardValue.name() + " of " + suit.name();
     }
 
     public String lookupFile()
     {
-        return value.filename + suit.value + ".png";
+        return cardValue.filename + suit.value + ".png";
     }
 
 }

@@ -1,10 +1,7 @@
 package gmu.Project.model;
 
 
-import gmu.Project.Card;
-import gmu.Project.GameState;
-import gmu.Project.Hand;
-import gmu.Project.Status;
+import gmu.Project.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,6 +35,23 @@ public class Game {
     @Enumerated
     private Status status;
     private String gameOwner;
+    private int currentPot;
+    @ElementCollection
+    private Collection<Card> deck;
+
+    public Collection<Card> getDeck() {
+        return deck;
+    }
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
+    }
+
+    public int getCurrentPot() {
+        return currentPot;
+    }
+    public void setCurrentPot(int currentPot) {
+        this.currentPot = currentPot;
+    }
 
     public String getGameOwner() {
         return gameOwner;
