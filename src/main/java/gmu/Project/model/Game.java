@@ -38,6 +38,14 @@ public class Game {
     @Enumerated
     private Status status;
     private String gameOwner;
+    private int currentPot;
+
+    public int getCurrentPot() {
+        return currentPot;
+    }
+    public void setCurrentPot(int currentPot) {
+        this.currentPot = currentPot;
+    }
 
     public String getGameOwner() {
         return gameOwner;

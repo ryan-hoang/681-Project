@@ -25,6 +25,9 @@
                 <h3 th:text="'Player 2:' +${session.game.getP2username()}"></h3>
             </div>
             <div th:unless="${session.game.getP2username() == ''}">
+                <h2>Click "Start Game" to Begin!</h2>
+                <input type="hidden" name = "gameID" th:value="${session.game.getGameId()}">
+                <input type="hidden" name = "requestType" value="start">
                 <h3 th:text="'Player 1:' +${session.game.getP1username()}"></h3>
                 <h3 th:text="'Player 2:' +${session.game.getP2username()}"></h3>
                 <button type="submit">Start Game</button>
