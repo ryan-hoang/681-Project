@@ -8,16 +8,18 @@ public class HandComparison {
     public static String compareHands(Card[] player1Hand, Card[] player2Hand) {
         int playerOne = determineHand(player1Hand).getHandInt();
         int playerTwo = determineHand(player2Hand).getHandInt();
+        Hand hand1 = determineHand(player1Hand);
+        Hand hand2 = determineHand(player2Hand);
         if(playerOne > playerTwo){
-            return "p1" + player1Hand;
+            return "p1" + hand1;
         }
         if(playerOne < playerTwo){
-            return "p2" + player2Hand;
+            return "p2" + hand2;
         }
         else {
             int handType = playerOne;
             String result = equalHandComparer(player1Hand, player2Hand, handType);
-            return result + "p1:" + player1Hand + "p2:" + player2Hand;
+            return result + " p1: " + hand1 + " p2: " + hand2;
         }
     }
 
@@ -171,7 +173,7 @@ public class HandComparison {
 
     public static String highestCardWin(Card[] p1, Card[] p2){
         int i = 4;
-        while(p1[i].cardValue.getCardValue() != p2[i].cardValue.getCardValue() && i != 0){
+        while(p1[i].cardValue.getCardValue() == p2[i].cardValue.getCardValue() && i != 0){
             i--;
         }
         if(p1[i].cardValue.getCardValue() == p2[i].cardValue.getCardValue()){
