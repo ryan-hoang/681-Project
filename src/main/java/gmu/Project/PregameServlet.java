@@ -109,59 +109,6 @@ public class PregameServlet extends HttpServlet
         requestDispatcher.forward(req,resp);
     }
 
-    private void printPage(HttpServletResponse response)
-    {
-        response.setContentType("text/html");
-        try {
-            PrintWriter out = response.getWriter();
-            out.println("<!DOCTYPE html>\n" +
-                    "<html xmlns:th=\"http://www.thymeleaf.org\">\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <title>Pregame Lobby</title>\n" +
-                    "</head>\n" +
-                    "<script> setTimeout(function(){window.location.reload(1);}, 5000); </script>\n" +
-                    "<style>\n" +
-                    "    .box{\n" +
-                    "        margin:0 auto;\n" +
-                    "        width:350px;\n" +
-                    "        padding:20px;\n" +
-                    "        background:#f9f9f9;\n" +
-                    "        border:2px solid #333;\n" +
-                    "    }\n" +
-                    "</style>\n" +
-                    "<body>\n" +
-                    "\n" +
-                    "<div class=\"box\">\n" +
-                    "    <form action=\"/game\">\n" +
-                    "        <div th:if=\"${#strings.equals(session.game.getGameOwner(),session.username)}\">\n" +
-                    "            <div th:if=\"${session.game.getP2username() == ''}\">\n" +
-                    "                <h2>Waiting For Players...</h2>\n" +
-                    "                <h3 th:text=\"'Player 1:' +${session.game.getP1username()}\"></h3>\n" +
-                    "                <h3 th:text=\"'Player 2:' +${session.game.getP2username()}\"></h3>\n" +
-                    "            </div>\n" +
-                    "            <div th:unless=\"${session.game.getP2username() == ''}\">\n" +
-                    "                <h3 th:text=\"'Player 1:' +${session.game.getP1username()}\"></h3>\n" +
-                    "                <h3 th:text=\"'Player 2:' +${session.game.getP2username()}\"></h3>\n" +
-                    "                <button type=\"submit\">Start Game</button>\n" +
-                    "            </div>\n" +
-                    "        </div>\n" +
-                    "        <div th:unless=\"${#strings.equals(session.game.getGameOwner(),session.username)}\">\n" +
-                    "            <h2>Waiting For Host to Start Game.</h2>\n" +
-                    "            <h3 th:text=\"'Player 1:' + ${session.game.getP1username()}\"></h3>\n" +
-                    "            <h3 th:text=\"'Player 2:' + ${session.game.getP2username()}\"></h3>\n" +
-                    "        </div>\n" +
-                    "    </form>\n" +
-                    "</div>\n" +
-                    "\n" +
-                    "</body>\n" +
-                    "</html>");
-        }
-        catch(IOException e)
-        {
-            System.err.println("Failed to print out Pregame Page.");
-        }
-    }
 }
 
 

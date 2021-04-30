@@ -104,6 +104,8 @@ public class GameServlet extends HttpServlet
             case "showhand":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
                 //check if anyone is broke here and end game by sending a bean with the gameover state.
                 break;
+            case "gameover": // form acton, ok button to end game, cleanup game and exit to homepage
+                break;
 
         }
     }
