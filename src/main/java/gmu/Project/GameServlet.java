@@ -159,6 +159,8 @@ public class GameServlet extends HttpServlet
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
                         game.setState(getNextState(game.getState()));
+                        game.setTurn(game.getP2username());
+                        game.setHandTurn(0);
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
@@ -185,7 +187,8 @@ public class GameServlet extends HttpServlet
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
                         game.setState(getNextState(game.getState()));
-                        game.setHandTurn(game.getHandTurn() + 1);
+                        game.setTurn(game.getP1username());
+                        game.setHandTurn(0);
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
@@ -197,11 +200,108 @@ public class GameServlet extends HttpServlet
                     game.setMessage(username + " bet $" + betAmount);
                     game.setLastMoveTime(LocalDateTime.now());
                     game.setPrevP2Bet(betAmount + game.getPrevP2Bet()); //Previous bet for checking
+                    game.setHandTurn(game.getHandTurn() + 1);
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
                 break;
             case "DRAW": // form action from draw form in table.html
+                ArrayList<Card> player1Hand = (ArrayList<Card>) game.getP1Hand();
+                ArrayList<Card> player2Hand = (ArrayList<Card>) game.getP2Hand();
+                if(username.equals(game.getP1username())) {
+                    String card0 = request.getParameter("card0");
+                    String card1 = request.getParameter("card1");
+                    String card2 = request.getParameter("card2");
+                    String card3 = request.getParameter("card3");
+                    String card4 = request.getParameter("card4");
+                    System.out.println(card0 + card1 + card3 + card4 + "+++++++++++++++++++++++++++++++");
+                    if (card0 != null) {
+                        System.out.println(card0 + "selected!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player1Hand.remove(0));
+                        deck.returnCards(temp);
+                        System.out.println(player1Hand);
+                        player1Hand.addAll(deck.deal(1));
+                        System.out.println(player1Hand);
+                    }
+                    if (card1 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player1Hand.remove(1));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card2 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player1Hand.remove(2));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card3 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player1Hand.remove(3));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card4 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player1Hand.remove(4));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    game.setP1Hand(player1Hand);
+                    game.setHandTurn(game.getHandTurn() + 1);
+                    game.setDeck(deck.getDeck());
+                    game.setTurn(game.getP2username());
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
+                if(username.equals(game.getP2username())) {
+                    String card0 = request.getParameter("card0");
+                    String card1 = request.getParameter("card1");
+                    String card2 = request.getParameter("card2");
+                    String card3 = request.getParameter("card3");
+                    String card4 = request.getParameter("card4");
+                    if (card0 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player2Hand.remove(0));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card1 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player2Hand.remove(1));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card2 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player2Hand.remove(2));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card3 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player2Hand.remove(3));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    if (card4 != null) {
+                        ArrayList<Card> temp = new ArrayList<>();
+                        temp.add(player2Hand.remove(4));
+                        deck.returnCards(temp);
+                        player1Hand.addAll(deck.deal(1));
+                    }
+                    game.setP2Hand(player2Hand);
+                    game.setHandTurn(game.getHandTurn() + 1);
+                    game.setDeck(deck.getDeck());
+                    game.setTurn(game.getP1username());
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
+
+
+                assert(player1Hand.size() == 5);
+                assert(player2Hand.size() == 5);
                 break;
             case "BETTWO":// form action from second round bet in table.html
                 break;
