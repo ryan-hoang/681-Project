@@ -403,11 +403,11 @@ public class GameServlet extends HttpServlet
                 if(result.equals("Player1")){
                     game.setP1balance(game.getP1balance() + game.getCurrentPot());
                     winningHand = determineHand(cardP1).getName();
-                    game.setMessage(username + " has won the hand with a " + winningHand + "!");
+                    game.setMessage(game.getP1username() + " has won the hand with a " + winningHand + "!");
                 } else if (result.equals("Player2")) {
                     game.setP2balance(game.getP2balance() + game.getCurrentPot());
                     winningHand = determineHand(cardP2).getName();
-                    game.setMessage(username + " has won the hand with a " + winningHand + "!");
+                    game.setMessage(game.getP2username() + " has won the hand with a " + winningHand + "!");
                 } else {
                     game.setP1balance(game.getP1balance() + (game.getCurrentPot()/2));
                     game.setP2balance(game.getP2balance() + (game.getCurrentPot()/2));
@@ -508,7 +508,7 @@ public class GameServlet extends HttpServlet
         GameBean gb = generateLatestBean(game,username);
         HttpSession session = request.getSession();
         session.setAttribute("gamebean", gb);
-
+        session.setAttribute("username", username);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("table");
         requestDispatcher.forward(request,response);
     }
