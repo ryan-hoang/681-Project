@@ -215,7 +215,6 @@
                         <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <div class="innercontainer">
                             <div class ="item1">
-                                <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
                                 <ul>
                                     <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
                                     <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
@@ -237,8 +236,16 @@
 
     <div th:unless="${#strings.equals(session.gamebean.getUserTurn(), session.gamebean.getUser())}">
         <div class="opponentarea">
-            <div class="innercontainer">
-                <div class="item1"> <span th:text="'Opponent\'s' + ${session.gamebean.getOpponentMoney()}"> </span></div>
+            <div th:if="${session.gamebean.getGs().name() == 'SHOWHAND'}" class="innercontainer">
+                <div class="item1"> <span th:text="'Opponent\'s Cash: $' + ${session.gamebean.getOpponentMoney()}"> </span></div>
+                <div class="item2"><img th:src="@{${session.gamebean.getOpponentHand()[0].lookupFile()}}" width="200" height="350"> </div>
+                <div class="item3"><img th:src="@{${session.gamebean.getOpponentHand()[1].lookupFile()}}" width="200" height="350"> </div>
+                <div class="item4"><img th:src="@{${session.gamebean.getOpponentHand()[2].lookupFile()}}" width="200" height="350"> </div>
+                <div class="item5"><img th:src="@{${session.gamebean.getOpponentHand()[3].lookupFile()}}" width="200" height="350"> </div>
+                <div class="item6"><img th:src="@{${session.gamebean.getOpponentHand()[4].lookupFile()}}" width="200" height="350"> </div>
+            </div>
+            <div th:unless="${session.gamebean.getGs().name() == 'SHOWHAND'}" class="innercontainer">
+                <div class="item1"> <span th:text="'Opponent\'s Cash: $' + ${session.gamebean.getOpponentMoney()}"> </span></div>
                 <div class="item2"><img src="Cardback.png" width="200" height="350"></div>
                 <div class="item3"><img src="Cardback.png" width="200" height="350"></div>
                 <div class="item4"><img src="Cardback.png" width="200" height="350"></div>
