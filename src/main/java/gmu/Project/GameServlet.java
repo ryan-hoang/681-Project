@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class GameServlet extends HttpServlet
@@ -206,8 +207,20 @@ public class GameServlet extends HttpServlet
                 }
                 break;
             case "DRAW": // form action from draw form in table.html
-                ArrayList<Card> player1Hand = (ArrayList<Card>) game.getP1Hand();
-                ArrayList<Card> player2Hand = (ArrayList<Card>) game.getP2Hand();
+                Collection<Card> temp1 = game.getP1Hand();
+                Collection<Card> temp2 = game.getP2Hand();
+                ArrayList<Card> player1Hand = new ArrayList<>();
+                ArrayList<Card> player2Hand = new ArrayList<>();
+
+                for (Card c :temp1)
+                {
+                    player1Hand.add(c);
+                }
+                for (Card c :temp2)
+                {
+                    player2Hand.add(c);
+                }
+
                 if(username.equals(game.getP1username())) {
                     String card0 = request.getParameter("card0");
                     String card1 = request.getParameter("card1");
