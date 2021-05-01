@@ -11,15 +11,15 @@ public class HandComparison {
         Hand hand1 = determineHand(player1Hand);
         Hand hand2 = determineHand(player2Hand);
         if(playerOne > playerTwo){
-            return "p1" + hand1;
+            return "Player1";
         }
         if(playerOne < playerTwo){
-            return "p2" + hand2;
+            return "Player2";
         }
         else {
             int handType = playerOne;
             String result = equalHandComparer(player1Hand, player2Hand, handType);
-            return result + " p1: " + hand1 + " p2: " + hand2;
+            return result;
         }
     }
 
