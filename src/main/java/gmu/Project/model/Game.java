@@ -39,7 +39,9 @@ public class Game {
     @ElementCollection
     private Collection<Card> deck;
     private String lastMove;
-    private int prevBet;
+    private int prevP1Bet;
+    private int prevP2Bet;
+    private int handTurn;
     private String message;
 
     public String getMessage() {
@@ -175,6 +177,27 @@ public class Game {
         this.gameWinner = gameWinner;
     }
 
-    public int getPrevBet() { return prevBet; }
-    public void setPrevBet(int prevBet) { this.prevBet = prevBet; }
+    public int getPrevP1Bet() {
+        return prevP1Bet;
+    }
+
+    public void setPrevP1Bet(int prevP1Bet) {
+        this.prevP1Bet = prevP1Bet;
+    }
+
+    public int getPrevP2Bet() {
+        return prevP2Bet;
+    }
+
+    public void setPrevP2Bet(int prevP2Bet) {
+        this.prevP2Bet = prevP2Bet;
+    }
+
+    public int getHandTurn() {
+        return handTurn;
+    }
+
+    public void setHandTurn(int handTurn) {
+        this.handTurn = handTurn;
+    }
 }

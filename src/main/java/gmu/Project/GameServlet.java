@@ -132,46 +132,62 @@ public class GameServlet extends HttpServlet
                 ArrayList<Card> p2Hand = deck.deal(5);
                 game.setP1Hand(p1Hand);
                 game.setP2Hand(p2Hand);
-                game.setPrevBet(-1);
+                game.setPrevP1Bet(0);
+                game.setPrevP2Bet(0);
+                game.setCurrentPot(0);
+                game.setHandTurn(0);
                 gameRepo.save(game);
 
                 goToTable(game,username,request,response);
                 break;
             case "BETONE": //form action from first round bet in table.html
                 String s = request.getParameter("betamount");
-                int betAmount = Integer.parseInt(s);
-                if (betAmount < 0 || betAmount < game.getPrevBet() || betAmount > game.getP1balance()) {
-                    //throw error "Call or Raise"
+                if(s.equals("")) {
+                    goToTable(game, username, request, response);
                     break;
                 }
-                game.setPrevBet(betAmount); //Previous bet for checking
-                game.setCurrentPot(game.getCurrentPot() + betAmount); //Update current pot
-
+                int betAmount = Integer.parseInt(s);
                 if(username.equals(game.getP1username())) {
-                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
-                    game.setTurn(game.getP2username()); //Changing turns
-                    if(betAmount == game.getPrevBet()){ //Check to see if they are calling or "Checking" both bet 0
+                    if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
+                        //throw error "Call or Raise"
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called " + betAmount);
                         game.setState(getNextState(game.getState()));
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
+                    game.setTurn(game.getP2username()); //Changing turns
                     game.setLastMove(username + " bet " + betAmount);
+                    game.setPrevP1Bet(betAmount + game.getPrevP1Bet()); //Previous bet for checking
+                    game.setHandTurn(game.getHandTurn() + 1);
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
                 if(username.equals(game.getP2username())) {
-                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
-                    game.setTurn(game.getP1username()); //Changing turns
-                    if(betAmount == game.getPrevBet()){  //Check to see if they are calling or "Checking" both bet 0
+                    if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
+                        //throw error "Call or Raise"
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called " + betAmount);
                         game.setState(getNextState(game.getState()));
+                        game.setHandTurn(game.getHandTurn() + 1);
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
+                    game.setTurn(game.getP1username()); //Changing turns
                     game.setLastMove(username + " bet " + betAmount);
+                    game.setPrevP2Bet(betAmount + game.getPrevP2Bet()); //Previous bet for checking
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
