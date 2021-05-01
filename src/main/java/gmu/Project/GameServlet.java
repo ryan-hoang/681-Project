@@ -262,6 +262,13 @@ public class GameServlet extends HttpServlet
                     game.setHandTurn(game.getHandTurn() + 1);
                     game.setDeck(deck.getDeck());
                     game.setTurn(game.getP2username());
+                    if(game.getHandTurn() >= 2){
+                        game.setHandTurn(0);
+                        game.setState(getNextState(game.getState()));
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
@@ -305,15 +312,80 @@ public class GameServlet extends HttpServlet
                     game.setHandTurn(game.getHandTurn() + 1);
                     game.setDeck(deck.getDeck());
                     game.setTurn(game.getP1username());
+                    if(game.getHandTurn() >= 2){
+                        game.setHandTurn(0);
+                        game.setState(getNextState(game.getState()));
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
-
-
-                assert(player1Hand.size() == 5);
-                assert(player2Hand.size() == 5);
                 break;
             case "BETTWO":// form action from second round bet in table.html
+                s = request.getParameter("betamount");
+                if(s.equals("")) {
+                    goToTable(game, username, request, response);
+                    break;
+                }
+                betAmount = Integer.parseInt(s);
+                if(username.equals(game.getP1username())) {
+                    if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
+                        //throw error "Call or Raise"
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
+                        game.setLastMove(username + " called!");
+                        game.setMessage(username + " called!");
+                        game.setLastMoveTime(LocalDateTime.now());
+                        game.setState(getNextState(game.getState()));
+                        game.setTurn(game.getP2username());
+                        game.setHandTurn(0);
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
+                    game.setTurn(game.getP2username()); //Changing turns
+                    game.setLastMove(username + " bet $" + betAmount);
+                    game.setMessage(username + " bet $" + betAmount);
+                    game.setLastMoveTime(LocalDateTime.now());
+                    game.setPrevP1Bet(betAmount + game.getPrevP1Bet()); //Previous bet for checking
+                    game.setHandTurn(game.getHandTurn() + 1);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
+                if(username.equals(game.getP2username())) {
+                    if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
+                        //throw error "Call or Raise"
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
+                        game.setLastMove(username + " called!");
+                        game.setMessage(username + " called!");
+                        game.setLastMoveTime(LocalDateTime.now());
+                        game.setState(getNextState(game.getState()));
+                        game.setTurn(game.getP1username());
+                        game.setHandTurn(0);
+                        gameRepo.save(game);
+                        goToTable(game, username, request, response);
+                        break;
+                    }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
+                    game.setTurn(game.getP1username()); //Changing turns
+                    game.setLastMove(username + " bet $" + betAmount);
+                    game.setMessage(username + " bet $" + betAmount);
+                    game.setLastMoveTime(LocalDateTime.now());
+                    game.setPrevP2Bet(betAmount + game.getPrevP2Bet()); //Previous bet for checking
+                    game.setHandTurn(game.getHandTurn() + 1);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
                 break;
             case "SHOWHAND":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
                 //check if anyone is broke here and end game by sending a bean with the gameover state.
