@@ -1,11 +1,10 @@
 package gmu.Project;
 
 import java.io.Serializable;
-import java.util.Objects;
+
 
 public class Card implements Serializable
 {
-    private static final long serialVersionUID = 6529685098267757690L;
     public enum CardValue
     {
         ACE(14,"A"),
@@ -61,18 +60,6 @@ public class Card implements Serializable
         this.suit = suit;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
-        return suit == card.suit && cardValue == card.cardValue;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(suit, cardValue);
-    }
 
     public String toString ()
     {

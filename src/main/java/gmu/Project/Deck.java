@@ -2,7 +2,6 @@ package gmu.Project;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Deck
 {
@@ -56,18 +55,6 @@ public class Deck
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Deck deck1 = (Deck) o;
-        return rand.equals(deck1.rand) && deck.equals(deck1.deck);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(rand, deck);
-    }
 
     public ArrayList<Card> getDeck()
     {

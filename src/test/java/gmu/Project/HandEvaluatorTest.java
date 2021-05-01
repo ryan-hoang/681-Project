@@ -48,22 +48,6 @@ class HandEvaluatorTest {
         assertEquals(deck.getDeck().size(),52);
     }
 
-    @Test
-    public void deckTest()
-    {
-        Deck deck = new Deck();
-        ArrayList<Card> hand1 = deck.deal(15);
-        ArrayList<Card> hand2 = deck.deal(15);
-
-        HashSet<Card> set = new HashSet<>()
-        for(int i = 0; i<100; i++)
-        {
-            for(Card c : hand1)
-            {
-                assert(set.add(c);
-            }
-        }
-    }
 
 
 
