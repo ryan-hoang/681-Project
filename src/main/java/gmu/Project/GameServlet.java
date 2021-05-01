@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,6 +52,44 @@ public class GameServlet extends HttpServlet
         if(userRepo.findByUsername(username).isInGame()) {
             Long gameID = userRepo.findByUsername(username).getCurrentGame();
             Game game = gameRepo.findByGameId(gameID);
+            LocalDateTime lastMove = game.getLastMoveTime();
+            Duration timeout = Duration.between(lastMove, LocalDateTime.now());
+            if(timeout.toMinutes() > 1 && game.getTurn().equals(game.getP1username())){
+                game.setGameWinner(game.getP2username());
+                game.setMessage("GAMEOVER " + game.getP2username() + " wins the game!!");
+                game.setStatus(Status.FINISHED);
+                game.setState(GameState.GAMEOVER);
+                User one = userRepo.findByUsername(game.getP1username());
+                User two = userRepo.findByUsername(game.getP2username());
+                one.setInGame(false);
+                two.setInGame(false);
+                one.setCurrentGame(null);
+                two.setCurrentGame(null);
+                userRepo.save(one);
+                userRepo.save(two);
+                game.setLastMoveTime(LocalDateTime.now());
+                gameRepo.save(game);
+                goToTable(game, username, request, response);
+                return;
+            }
+            if(timeout.toMinutes() > 1 && game.getTurn().equals(game.getP2username())){
+                game.setGameWinner(game.getP1username());
+                game.setMessage("GAMEOVER " + game.getP1username() + " wins the game!!");
+                game.setStatus(Status.FINISHED);
+                game.setState(GameState.GAMEOVER);
+                User one = userRepo.findByUsername(game.getP1username());
+                User two = userRepo.findByUsername(game.getP2username());
+                one.setInGame(false);
+                two.setInGame(false);
+                one.setCurrentGame(null);
+                two.setCurrentGame(null);
+                userRepo.save(one);
+                userRepo.save(two);
+                game.setLastMoveTime(LocalDateTime.now());
+                gameRepo.save(game);
+                goToTable(game, username, request, response);
+                return;
+            }
             Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
             goToTable(game,username,request,response);
         } else {
@@ -144,6 +183,7 @@ public class GameServlet extends HttpServlet
                 game.setP2Hand(p2Hand);
                 game.setPrevP1Bet(0);
                 game.setPrevP2Bet(0);
+                game.setLastMoveTime(LocalDateTime.now());
                 game.setCurrentPot(0);
                 game.setHandTurn(0);
                 game.setDeck(deck.getDeck());
@@ -157,7 +197,13 @@ public class GameServlet extends HttpServlet
                     goToTable(game, username, request, response);
                     break;
                 }
-                int betAmount = Integer.parseInt(s);
+                int betAmount;
+                try{
+                    betAmount = Integer.parseInt(s);
+                } catch (NumberFormatException e){
+                    goToTable(game, username, request, response);
+                    break;
+                }
                 if(username.equals(game.getP1username())) {
                     if(game.getP1balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
@@ -279,10 +325,12 @@ public class GameServlet extends HttpServlet
                     if(game.getHandTurn() >= 2){
                         game.setHandTurn(0);
                         game.setState(getNextState(game.getState()));
+                        game.setLastMoveTime(LocalDateTime.now());
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setLastMoveTime(LocalDateTime.now());
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
@@ -329,10 +377,12 @@ public class GameServlet extends HttpServlet
                     if(game.getHandTurn() >= 2){
                         game.setHandTurn(0);
                         game.setState(getNextState(game.getState()));
+                        game.setLastMoveTime(LocalDateTime.now());
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setLastMoveTime(LocalDateTime.now());
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
@@ -343,7 +393,12 @@ public class GameServlet extends HttpServlet
                     goToTable(game, username, request, response);
                     break;
                 }
-                betAmount = Integer.parseInt(s);
+                try{
+                    betAmount = Integer.parseInt(s);
+                } catch (NumberFormatException e){
+                    goToTable(game, username, request, response);
+                    break;
+                }
                 if(username.equals(game.getP1username())) {
                     if(game.getP1balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
@@ -438,6 +493,7 @@ public class GameServlet extends HttpServlet
                     two.setCurrentGame(null);
                     userRepo.save(one);
                     userRepo.save(two);
+                    game.setLastMoveTime(LocalDateTime.now());
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
@@ -454,6 +510,7 @@ public class GameServlet extends HttpServlet
                     two.setCurrentGame(null);
                     userRepo.save(one);
                     userRepo.save(two);
+                    game.setLastMoveTime(LocalDateTime.now());
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
                 }
@@ -481,10 +538,13 @@ public class GameServlet extends HttpServlet
                 game.setHandTurn(0);
                 game.setDeck(deck.getDeck());
                 game.setState(GameState.BETONE);
+                game.setLastMoveTime(LocalDateTime.now());
                 gameRepo.save(game);
                 goToTable(game, username, request, response);
                 break;
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage");
+                requestDispatcher.forward(request,response);;
                 break;
             case "FOLD":
                 cardP1 = new Card [5];
@@ -523,6 +583,7 @@ public class GameServlet extends HttpServlet
                 game.setHandTurn(0);
                 game.setDeck(deck.getDeck());
                 game.setState(GameState.BETONE);
+                game.setLastMoveTime(LocalDateTime.now());
                 gameRepo.save(game);
                 goToTable(game, username, request, response);
                 break;
