@@ -185,7 +185,8 @@ public class GameServlet extends HttpServlet
                 break;
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
                 break;
-
+            case "FOLD":
+                break;
         }
     }
 
@@ -213,6 +214,8 @@ public class GameServlet extends HttpServlet
         gb.setHandWinner(game.getHandWinner());
         gb.setWinningHand(game.getWinningHand());
         gb.setGameID(game.getGameId());
+        gb.setCurrentPot(game.getCurrentPot());
+        gb.setMessage(game.getMessage());
         if(game.getP1username().equals(username))
         {
 

@@ -17,13 +17,28 @@ public class GameBean implements java.io.Serializable
     private String gameWinner = "";//
     private String opponent = "";//
     private String lastMove = "";
+    private int currentPot = 0;
+    private String message = "";
 
     public GameBean(){}
+
+    public int getCurrentPot() {
+        return currentPot;
+    }
+    public void setCurrentPot(int currentPot) {
+        this.currentPot = currentPot;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Long getGameID() {
         return gameID;
     }
-
     public void setGameID(Long gameID) {
         this.gameID = gameID;
     }

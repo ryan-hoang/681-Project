@@ -89,13 +89,19 @@
     <div class="maincontainer">
         <div class="opponentarea">
             <div class="innercontainer">
-                <h1> <label th:text="${session.gamebean.getOpponent()} + '\'s hand.'"> </label> </h1>
             </div>
         </div>
         <div class="myarea">
             <div class="innercontainer">
                 <div class ="item1">
-                    <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
+                    <h1> <label th:text="${session.gamebean.getGameWinner()} + ' has won the game.'"></label></h1>
+                    <form action="/game" method="post">
+                        <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
+                        <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <span th:text="'Message from server: '${session.gamebean.getMessage()}"></span>
+                        <button type="submit">Exit Game</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -107,7 +113,7 @@
             <div class="maincontainer">
                 <div class="opponentarea">
                     <div class="innercontainer">
-                        <div class="item1"> <span th:text="'Opponent\'s Money:' + ${session.gamebean.getOpponentMoney()}"> </span></div>
+                        <div class="item1"> <span th:text="'Opponent\'s Money: $' + ${session.gamebean.getOpponentMoney()}"> </span></div>
                         <div class="item2"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item3"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item4"><img src="Cardback.png" width="200" height="350"></div>
@@ -118,6 +124,12 @@
                 <div class="myarea">
                     <form action="/game" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name = "requestType" value="FOLD">
+                        <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
+                        <button type="submit">Fold</button>
+                    </form>
+                    <form action="/game" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
                         <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <div class="innercontainer">
@@ -125,7 +137,11 @@
                             <h1>It's your turn to bet.</h1>
                                 <button type="submit">Bet</button>
                                     <input type="number" min=0 name="betamount">
-                                    <span th:text="'Your Cash: ' + ${session.gamebean.getMyMoney()}"></span>
+                                <ul>
+                                    <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
+                                    <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
+                                    <li><span th:text="'Message from server: '${session.gamebean.getMessage()}"></span> </li>
+                                </ul>
                             </div>
                             <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
                             <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
@@ -143,7 +159,7 @@
             <div class="maincontainer">
                 <div class="opponentarea">
                     <div class="innercontainer">
-                        <div class="item1"> <span th:text="'Opponent\'s Cash:' + ${session.gamebean.getOpponentMoney()}"> </span></div>
+                        <div class="item1"> <span th:text="'Opponent\'s Cash: $' + ${session.gamebean.getOpponentMoney()}"> </span></div>
                         <div class="item2"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item3"><img src="Cardback.png" width="200" height="350"></div>
                         <div class="item4"><img src="Cardback.png" width="200" height="350"></div>
@@ -157,7 +173,11 @@
                                 <div class ="item1">
                                     <h1>Discard up to 5 cards</h1>
                                     <button type="submit">Submit</button>
-                                    <span th:text="'Your Cash: ' + ${session.gamebean.getMyMoney()}"></span>
+                                    <ul>
+                                        <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
+                                        <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
+                                        <li><span th:text="'Message from server: '${session.gamebean.getMessage()}"></span> </li>
+                                    </ul>
                                 </div>
                                 <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card0" name="card0" value="0"> </div>
                                 <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> <input type="checkbox" id="card1" name="card1" value="1"> </div>
@@ -176,7 +196,7 @@
                     <div class="innercontainer">
                         <div class="item1">
                             <h1> <label th:text="${session.gamebean.getOpponent()} + '\'s hand.'"> </label> </h1>
-                            <span th:text="'Opponent\'s Cash:' + ${session.gamebean.getOpponentMoney()}"></span>
+                            <span th:text="'Opponent\'s Cash: $' + ${session.gamebean.getOpponentMoney()}"></span>
                         </div>
                         <div class="item2"><img th:src="@{${session.gamebean.getOpponentHand()[0].lookupFile()}}" width="200" height="350"> </div>
                         <div class="item3"><img th:src="@{${session.gamebean.getOpponentHand()[1].lookupFile()}}" width="200" height="350"> </div>
@@ -189,7 +209,11 @@
                         <div class="innercontainer">
                             <div class ="item1">
                                 <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
-                                <span th:text="'Your Cash: ' + ${session.gamebean.getMyMoney()}"></span>
+                                <ul>
+                                    <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
+                                    <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
+                                    <li><span th:text="'Message from server: '${session.gamebean.getMessage()}"></span> </li>
+                                </ul>
                             </div>
                             <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"></div>
                             <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"></div>
@@ -217,6 +241,11 @@
                 <div class="innercontainer">
                     <div class ="item1">
                         <h1>Waiting for your turn.</h1>
+                        <ul>
+                            <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
+                            <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
+                            <li><span th:text="'Message from server: '${session.gamebean.getMessage()}"></span> </li>
+                        </ul>
                     </div>
                     <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"> </div>
                     <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"> </div>
