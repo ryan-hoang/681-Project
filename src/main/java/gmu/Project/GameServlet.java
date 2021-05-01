@@ -278,31 +278,31 @@ public class GameServlet extends HttpServlet
                         ArrayList<Card> temp = new ArrayList<>();
                         temp.add(player2Hand.remove(0));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
+                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card1 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
                         temp.add(player2Hand.remove(1));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
+                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card2 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
                         temp.add(player2Hand.remove(2));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
+                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card3 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
                         temp.add(player2Hand.remove(3));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
+                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card4 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
                         temp.add(player2Hand.remove(4));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
+                        player2Hand.addAll(deck.deal(1));
                     }
                     game.setP2Hand(player2Hand);
                     game.setHandTurn(game.getHandTurn() + 1);
