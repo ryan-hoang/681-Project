@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Card implements Serializable
 {
-
+    private static final long serialVersionUID = 6529685098267757690L;
     public enum CardValue
     {
         ACE(14,"A"),

@@ -3,6 +3,7 @@ package gmu.Project;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static gmu.Project.HandComparison.compareHands;
 import static gmu.Project.HandComparison.determineHand;
@@ -54,15 +55,14 @@ class HandEvaluatorTest {
         ArrayList<Card> hand1 = deck.deal(15);
         ArrayList<Card> hand2 = deck.deal(15);
 
-        for(Card c: hand1)
+        HashSet<Card> set = new HashSet<>()
+        for(int i = 0; i<100; i++)
         {
-            assertFalse(hand2.contains(c));
+            for(Card c : hand1)
+            {
+                assert(set.add(c);
+            }
         }
-
-        System.out.println("======================HAND1===========================");
-        System.out.println(hand1);
-        System.out.println("======================HAND2===========================");
-        System.out.println(hand2);
     }
 
 
