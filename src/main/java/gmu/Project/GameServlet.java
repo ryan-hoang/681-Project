@@ -211,15 +211,8 @@ public class GameServlet extends HttpServlet
                 Collection<Card> temp2 = game.getP2Hand();
                 ArrayList<Card> player1Hand = new ArrayList<>();
                 ArrayList<Card> player2Hand = new ArrayList<>();
-
-                for (Card c :temp1)
-                {
-                    player1Hand.add(c);
-                }
-                for (Card c :temp2)
-                {
-                    player2Hand.add(c);
-                }
+                player1Hand.addAll(temp1);
+                player2Hand.addAll(temp2);
 
                 if(username.equals(game.getP1username())) {
                     String card0 = request.getParameter("card0");
@@ -227,39 +220,35 @@ public class GameServlet extends HttpServlet
                     String card2 = request.getParameter("card2");
                     String card3 = request.getParameter("card3");
                     String card4 = request.getParameter("card4");
-                    System.out.println(card0 + card1 + card3 + card4 + "+++++++++++++++++++++++++++++++");
                     if (card0 != null) {
-                        System.out.println(card0 + "selected!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player1Hand.remove(0));
+                        temp.add(player1Hand.get(0));
+                        player1Hand.set(0,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        System.out.println(player1Hand);
-                        player1Hand.addAll(deck.deal(1));
-                        System.out.println(player1Hand);
                     }
                     if (card1 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player1Hand.remove(1));
+                        temp.add(player1Hand.get(1));
+                        player1Hand.set(1,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
                     }
                     if (card2 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player1Hand.remove(2));
+                        temp.add(player1Hand.get(2));
+                        player1Hand.set(2,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
                     }
                     if (card3 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player1Hand.remove(3));
+                        temp.add(player1Hand.get(3));
+                        player1Hand.set(3,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
                     }
                     if (card4 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player1Hand.remove(4));
+                        temp.add(player1Hand.get(4));
+                        player1Hand.set(4,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player1Hand.addAll(deck.deal(1));
                     }
                     game.setP1Hand(player1Hand);
                     game.setHandTurn(game.getHandTurn() + 1);
@@ -276,33 +265,33 @@ public class GameServlet extends HttpServlet
                     String card4 = request.getParameter("card4");
                     if (card0 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player2Hand.remove(0));
+                        temp.add(player2Hand.get(0));
+                        player2Hand.set(0,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card1 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player2Hand.remove(1));
+                        temp.add(player2Hand.get(1));
+                        player2Hand.set(1,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card2 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player2Hand.remove(2));
+                        temp.add(player2Hand.get(2));
+                        player2Hand.set(2,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card3 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player2Hand.remove(3));
+                        temp.add(player2Hand.get(3));
+                        player2Hand.set(3,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player2Hand.addAll(deck.deal(1));
                     }
                     if (card4 != null) {
                         ArrayList<Card> temp = new ArrayList<>();
-                        temp.add(player2Hand.remove(4));
+                        temp.add(player2Hand.get(4));
+                        player2Hand.set(4,deck.deal(1).get(0));
                         deck.returnCards(temp);
-                        player2Hand.addAll(deck.deal(1));
                     }
                     game.setP2Hand(player2Hand);
                     game.setHandTurn(game.getHandTurn() + 1);
