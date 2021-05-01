@@ -26,9 +26,10 @@
     <a href="/test">Clear Games and User Status'</a>
 
 <div class ="box">
-    <form action="/pregame" method="get">
+    <form action="/pregame" method="post">
         <input type="hidden" name="requestType" value="joinGame">
         <input type="hidden" name="username" th:value="${username}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <h2>Join A Game.</h2>
         <select name ="games" id="games">
             <option value = "-1">Select Game Lobby to Join</option>
@@ -41,9 +42,10 @@
 </div>
 
 <div class="box">
-    <form action="/pregame" method="get">
+    <form action="/pregame" method="post">
         <input type="hidden" name="requestType" value="createGame">
         <input type="hidden" name="username" th:value="${username}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <h2>Create a new game for others to join.</h2>
         <button type="submit" class="btn btn-success">Create Game</button>
     </form>
