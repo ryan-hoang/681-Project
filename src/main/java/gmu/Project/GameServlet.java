@@ -154,10 +154,12 @@ public class GameServlet extends HttpServlet
                 }
                 int betAmount = Integer.parseInt(s);
                 if(username.equals(game.getP1username())) {
-                    if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
-                        //throw error "Call or Raise"
-                        goToTable(game, username, request, response);
-                        break;
+                    if(game.getP1balance() - betAmount != 0) {
+                        if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
+                            //throw error "Call or Raise"
+                            goToTable(game, username, request, response);
+                            break;
+                        }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
@@ -182,10 +184,12 @@ public class GameServlet extends HttpServlet
                     goToTable(game, username, request, response);
                 }
                 if(username.equals(game.getP2username())) {
-                    if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
-                        //throw error "Call or Raise"
-                        goToTable(game, username, request, response);
-                        break;
+                    if(game.getP2balance() - betAmount != 0) {
+                        if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
+                            //throw error "Call or Raise"
+                            goToTable(game, username, request, response);
+                            break;
+                        }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
@@ -336,10 +340,12 @@ public class GameServlet extends HttpServlet
                 }
                 betAmount = Integer.parseInt(s);
                 if(username.equals(game.getP1username())) {
-                    if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
-                        //throw error "Call or Raise"
-                        goToTable(game, username, request, response);
-                        break;
+                    if(game.getP1balance() - betAmount != 0) {
+                        if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
+                            //throw error "Call or Raise"
+                            goToTable(game, username, request, response);
+                            break;
+                        }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
@@ -364,10 +370,12 @@ public class GameServlet extends HttpServlet
                     goToTable(game, username, request, response);
                 }
                 if(username.equals(game.getP2username())) {
-                    if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
-                        //throw error "Call or Raise"
-                        goToTable(game, username, request, response);
-                        break;
+                    if(game.getP2balance() - betAmount != 0) {
+                        if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
+                            //throw error "Call or Raise"
+                            goToTable(game, username, request, response);
+                            break;
+                        }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
@@ -443,6 +451,10 @@ public class GameServlet extends HttpServlet
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
                 break;
             case "FOLD":
+                if(username.equals(game.getP1username())){
+                    game.setP2balance(game.getP2balance() + game.getCurrentPot());
+
+                }
                 break;
         }
     }
