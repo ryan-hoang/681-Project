@@ -213,8 +213,8 @@ public class GameServlet extends HttpServlet
                         }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
-                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
+                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0 || game.getP1balance() == 0){ //Check to see if they are calling or "Checking" both bet 0
+                        game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
@@ -225,6 +225,7 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     game.setTurn(game.getP2username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -243,8 +244,8 @@ public class GameServlet extends HttpServlet
                         }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
-                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
+                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet() || game.getP2balance() == 0){  //Check to see if they are calling or "Checking" both bet 0
+                        game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
@@ -257,6 +258,7 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     game.setTurn(game.getP1username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -408,8 +410,9 @@ public class GameServlet extends HttpServlet
                         }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
-                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
+                    if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0
+                            || game.getP1balance() == 0){ //Check to see if they are calling or "Checking" both bet 0
+                        game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
@@ -420,6 +423,7 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     game.setTurn(game.getP2username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -438,8 +442,8 @@ public class GameServlet extends HttpServlet
                         }
                     }
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
-                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
+                    if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet() || game.getP2balance() == 0){  //Check to see if they are calling or "Checking" both bet 0
+                        game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
@@ -450,6 +454,7 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     game.setTurn(game.getP1username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -543,8 +548,6 @@ public class GameServlet extends HttpServlet
                 goToTable(game, username, request, response);
                 break;
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage");
-                requestDispatcher.forward(request,response);;
                 break;
             case "FOLD":
                 cardP1 = new Card [5];
