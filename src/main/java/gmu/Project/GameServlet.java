@@ -48,12 +48,15 @@ public class GameServlet extends HttpServlet
         else
         {username = principal.toString();}
 
-
-        Long gameID = userRepo.findByUsername(username).getCurrentGame();
-        Game game = gameRepo.findByGameId(gameID);
-        Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
-
-        goToTable(game,username,request,response);
+        if(userRepo.findByUsername(username).isInGame()) {
+            Long gameID = userRepo.findByUsername(username).getCurrentGame();
+            Game game = gameRepo.findByGameId(gameID);
+            Deck deck = new Deck(game.getDeck().toArray(new Card[0]));
+            goToTable(game,username,request,response);
+        } else {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage");
+            requestDispatcher.forward(request,response);;
+        }
 
         /*
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
