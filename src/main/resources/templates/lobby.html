@@ -32,7 +32,7 @@
                 <h2>Click "Start Game" to Begin!</h2>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="hidden" name = "gameID" th:value="${session.game.getGameId()}">
-                <input type="hidden" name = "requestType" value="start">
+                <input type="hidden" name = "requestType" value="START">
                 <input type="hidden" name = "playerOne"   th:value="${session.username}">
                 <input type="hidden" name = "playerTwo"   th:value="${session.game.getP2username()}">
                 <h3 th:text="'Player 1:' +${session.game.getP1username()}"></h3>

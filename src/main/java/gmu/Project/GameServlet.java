@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static gmu.Project.HandComparison.compareHands;
+import static gmu.Project.HandComparison.determineHand;
+
 
 public class GameServlet extends HttpServlet
 {
@@ -127,7 +130,7 @@ public class GameServlet extends HttpServlet
 
         switch(requestType)
         {
-            case "start": // form action from the pregame lobby start button
+            case "START": // form action from the pregame lobby start button
                 game.setStatus(Status.ACTIVE);
                 game.setState(GameState.BETONE);
                 ArrayList<Card> p1Hand = deck.deal(5);
@@ -390,7 +393,38 @@ public class GameServlet extends HttpServlet
                 }
                 break;
             case "SHOWHAND":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
-                //check if anyone is broke here and end game by sending a bean with the gameover state.
+                System.out.println("INSIDE OF SHOWHAND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Card[] cardP1 = new Card [5];
+                Card[] cardP2 = new Card [5];
+                cardP1 = game.getP1Hand().toArray(cardP1);
+                cardP2 = game.getP2Hand().toArray(cardP2);
+                String result = compareHands(cardP1, cardP2);
+                String winningHand;
+                if(result.equals("Player1")){
+                    game.setP1balance(game.getP1balance() + game.getCurrentPot());
+                    winningHand = determineHand(cardP1).getName();
+                    game.setMessage(username + " has won the hand with a " + winningHand + "!");
+                } else if (result.equals("Player2")) {
+                    game.setP2balance(game.getP2balance() + game.getCurrentPot());
+                    winningHand = determineHand(cardP2).getName();
+                    game.setMessage(username + " has won the hand with a " + winningHand + "!");
+                } else {
+                    game.setP1balance(game.getP1balance() + (game.getCurrentPot()/2));
+                    game.setP2balance(game.getP2balance() + (game.getCurrentPot()/2));
+                    game.setMessage("Hand ended in a draw...");
+                }
+                p1Hand = deck.deal(5);
+                p2Hand = deck.deal(5);
+                game.setP1Hand(p1Hand);
+                game.setP2Hand(p2Hand);
+                game.setPrevP1Bet(0);
+                game.setPrevP2Bet(0);
+                game.setCurrentPot(0);
+                game.setHandTurn(0);
+                game.setDeck(deck.getDeck());
+                game.setState(GameState.BETONE);
+                gameRepo.save(game);
+                goToTable(game, username, request, response);
                 break;
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
                 break;
