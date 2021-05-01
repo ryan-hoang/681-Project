@@ -211,7 +211,7 @@
                 <div class="myarea">
                     <form action="/game" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
+                        <input type="hidden" name = "requestType" value="START">
                         <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <div class="innercontainer">
                             <div class ="item1">
