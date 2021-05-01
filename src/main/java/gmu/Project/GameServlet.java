@@ -138,6 +138,7 @@ public class GameServlet extends HttpServlet
                 game.setPrevP2Bet(0);
                 game.setCurrentPot(0);
                 game.setHandTurn(0);
+                game.setDeck(deck.getDeck());
                 gameRepo.save(game);
 
                 goToTable(game,username,request,response);
@@ -211,8 +212,15 @@ public class GameServlet extends HttpServlet
                 Collection<Card> temp2 = game.getP2Hand();
                 ArrayList<Card> player1Hand = new ArrayList<>();
                 ArrayList<Card> player2Hand = new ArrayList<>();
-                player1Hand.addAll(temp1);
-                player2Hand.addAll(temp2);
+
+                for(Card c : temp1)
+                {
+                    player1Hand.add(c);
+                }
+                for(Card c : temp2)
+                {
+                    player2Hand.add(c);
+                }
 
                 if(username.equals(game.getP1username())) {
                     String card0 = request.getParameter("card0");
