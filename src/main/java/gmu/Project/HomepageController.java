@@ -5,6 +5,7 @@ import gmu.Project.WebSecurity.RegistrationValidator;
 import gmu.Project.model.Game;
 import gmu.Project.model.User;
 import gmu.Project.repository.GameRepository;
+import gmu.Project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,6 +32,9 @@ public class HomepageController {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(value="/")
     public String rootView () {
@@ -74,6 +78,13 @@ public class HomepageController {
     @GetMapping(value="/lobby")
     public String pregame() {
         return "lobby";
+    }
+
+    @GetMapping(value="/test")
+    public String test() {
+        gameRepository.truncateGame();
+        userRepository.clearGames();
+        return "redirect:/homepage";
     }
 
     @GetMapping(value="/homepage")
