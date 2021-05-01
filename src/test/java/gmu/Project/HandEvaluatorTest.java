@@ -2,6 +2,8 @@ package gmu.Project;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static gmu.Project.HandComparison.compareHands;
 import static gmu.Project.HandComparison.determineHand;
 import static gmu.Project.HandEvaluator.*;
@@ -34,11 +36,37 @@ class HandEvaluatorTest {
         hand2[2] = h;
         hand2[3] = i;
         hand2[4] = j;
-        String result = compareHands(hand, hand2);
-        System.out.println(result);
+
 
         return;
     }
+    @Test
+    public void deckSizeTest()
+    {
+        Deck deck = new Deck();
+        assertEquals(deck.getDeck().size(),52);
+    }
+
+    @Test
+    public void deckTest()
+    {
+        Deck deck = new Deck();
+        ArrayList<Card> hand1 = deck.deal(15);
+        ArrayList<Card> hand2 = deck.deal(15);
+
+        for(Card c: hand1)
+        {
+            assertFalse(hand2.contains(c));
+        }
+
+        System.out.println("======================HAND1===========================");
+        System.out.println(hand1);
+        System.out.println("======================HAND2===========================");
+        System.out.println(hand2);
+    }
+
+
+
 
 
 }

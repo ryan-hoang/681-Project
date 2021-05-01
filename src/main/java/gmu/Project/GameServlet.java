@@ -426,8 +426,7 @@ public class GameServlet extends HttpServlet
         gb.setMessage(msg == null ? "" : msg);
         if(game.getP1username().equals(username))
         {
-
-            gb.setOpponentHand(game.getP1Hand().toArray(new Card[0]));  //them
+            gb.setOpponentHand(game.getP2Hand().toArray(new Card[0]));  //them
             gb.setHand(game.getP1Hand().toArray(new Card[0]));          //me
             gb.setMyMoney(game.getP1balance());                         //me
             gb.setOpponentMoney(game.getP2balance());                   //them
