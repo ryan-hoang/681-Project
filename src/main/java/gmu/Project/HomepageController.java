@@ -38,7 +38,7 @@ public class HomepageController {
 
     @GetMapping(value="/")
     public String rootView () {
-        return "Welcome";
+        return "login";
     }
 
     @GetMapping(value="/login")

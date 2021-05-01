@@ -168,7 +168,10 @@
                     </div>
                 </div>
                 <div class="myarea">
-                    <form>
+                    <form action="/game" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
+                        <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <div class="innercontainer">
                                 <div class ="item1">
                                     <h1>Discard up to 5 cards</h1>
@@ -206,6 +209,10 @@
                     </div>
                 </div>
                 <div class="myarea">
+                    <form action="/game" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
+                        <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <div class="innercontainer">
                             <div class ="item1">
                                 <h1> <label th:text="${session.gamebean.getHandWinner()} + ' has won with a ' + ${session.gamebean.getWinningHand().getName()} + '.'"></label></h1>
@@ -214,6 +221,7 @@
                                     <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
                                     <li><span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </li>
                                 </ul>
+                                <button type="submit">Continue</button>
                             </div>
                             <div class="item2"><img th:src="@{${session.gamebean.getHand()[0].lookupFile()}}" width="200" height="350"></div>
                             <div class="item3"><img th:src="@{${session.gamebean.getHand()[1].lookupFile()}}" width="200" height="350"></div>
@@ -221,6 +229,7 @@
                             <div class="item5"><img th:src="@{${session.gamebean.getHand()[3].lookupFile()}}" width="200" height="350"></div>
                             <div class="item6"><img th:src="@{${session.gamebean.getHand()[4].lookupFile()}}" width="200" height="350"></div>
                         </div>
+                    </form>
                 </div>
             </div>
         </div>
