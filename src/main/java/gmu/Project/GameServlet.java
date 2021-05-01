@@ -413,8 +413,22 @@ public class GameServlet extends HttpServlet
                     game.setP2balance(game.getP2balance() + (game.getCurrentPot()/2));
                     game.setMessage("Hand ended in a draw...");
                 }
+
                 p1Hand = deck.deal(5);
                 p2Hand = deck.deal(5);
+
+                ArrayList<Card> cardsToReturn = new ArrayList<>();
+
+                for(Card c : cardP1)
+                {
+                    cardsToReturn.add(c);
+                }
+                for(Card c : cardP2)
+                {
+                    cardsToReturn.add(c);
+                }
+                deck.returnCards(cardsToReturn);
+
                 game.setP1Hand(p1Hand);
                 game.setP2Hand(p2Hand);
                 game.setPrevP1Bet(0);
