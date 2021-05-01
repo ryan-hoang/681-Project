@@ -156,6 +156,8 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
@@ -167,8 +169,6 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
-                    game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     game.setTurn(game.getP2username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -184,19 +184,21 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
                         game.setLastMoveTime(LocalDateTime.now());
                         game.setState(getNextState(game.getState()));
                         game.setTurn(game.getP1username());
+                        game.setPrevP1Bet(0);
+                        game.setPrevP2Bet(0);
                         game.setHandTurn(0);
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
                         break;
                     }
-                    game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     game.setTurn(game.getP1username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -336,6 +338,8 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
@@ -347,8 +351,6 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
-                    game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     game.setTurn(game.getP2username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
@@ -364,6 +366,8 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
+                    game.setCurrentPot(game.getCurrentPot() + betAmount);
+                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
                         game.setLastMove(username + " called!");
                         game.setMessage(username + " called!");
@@ -375,8 +379,6 @@ public class GameServlet extends HttpServlet
                         goToTable(game, username, request, response);
                         break;
                     }
-                    game.setCurrentPot(game.getCurrentPot() + betAmount);
-                    game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     game.setTurn(game.getP1username()); //Changing turns
                     game.setLastMove(username + " bet $" + betAmount);
                     game.setMessage(username + " bet $" + betAmount);
