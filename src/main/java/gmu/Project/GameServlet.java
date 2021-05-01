@@ -2,6 +2,7 @@ package gmu.Project;
 
 import gmu.Project.model.Game;
 import gmu.Project.model.GameMove;
+import gmu.Project.model.User;
 import gmu.Project.repository.GameRepository;
 import gmu.Project.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -112,6 +113,7 @@ public class GameServlet extends HttpServlet
 
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
         GameRepository gameRepo = (GameRepository) springContext.getBean("gameRepository");
+        UserRepository userRepo = (UserRepository) springContext.getBean("userRepository");
 
         String requestType = request.getParameter("requestType");
         String ID = request.getParameter("gameID");
@@ -401,7 +403,6 @@ public class GameServlet extends HttpServlet
                 }
                 break;
             case "SHOWHAND":// form action, we have a form thats just an ok button for both players after both hands are shown on table.html
-                System.out.println("INSIDE OF SHOWHAND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 Card[] cardP1 = new Card [5];
                 Card[] cardP2 = new Card [5];
                 cardP1 = game.getP1Hand().toArray(cardP1);
@@ -420,6 +421,38 @@ public class GameServlet extends HttpServlet
                     game.setP1balance(game.getP1balance() + (game.getCurrentPot()/2));
                     game.setP2balance(game.getP2balance() + (game.getCurrentPot()/2));
                     game.setMessage("Hand ended in a draw...");
+                }
+                if(game.getP1balance() == 0){
+                    game.setGameWinner(game.getP2username());
+                    game.setMessage("GAMEOVER " + game.getP2username() + " wins the game!!");
+                    game.setStatus(Status.FINISHED);
+                    game.setState(GameState.GAMEOVER);
+                    User one = userRepo.findByUsername(game.getP1username());
+                    User two = userRepo.findByUsername(game.getP2username());
+                    one.setInGame(false);
+                    two.setInGame(false);
+                    one.setCurrentGame(null);
+                    two.setCurrentGame(null);
+                    userRepo.save(one);
+                    userRepo.save(two);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
+                }
+                if(game.getP2balance() == 0){
+                    game.setGameWinner(game.getP1username());
+                    game.setMessage("GAMEOVER " + game.getP1username() + " wins the game!!");
+                    game.setStatus(Status.FINISHED);
+                    game.setState(GameState.GAMEOVER);
+                    User one = userRepo.findByUsername(game.getP1username());
+                    User two = userRepo.findByUsername(game.getP2username());
+                    one.setInGame(false);
+                    two.setInGame(false);
+                    one.setCurrentGame(null);
+                    two.setCurrentGame(null);
+                    userRepo.save(one);
+                    userRepo.save(two);
+                    gameRepo.save(game);
+                    goToTable(game, username, request, response);
                 }
 
                 p1Hand = deck.deal(5);
@@ -451,10 +484,44 @@ public class GameServlet extends HttpServlet
             case "GAMEOVER": // form acton, ok button to end game, cleanup game and exit to homepage
                 break;
             case "FOLD":
+                cardP1 = new Card [5];
+                cardP2 = new Card [5];
+                cardP1 = game.getP1Hand().toArray(cardP1);
+                cardP2 = game.getP2Hand().toArray(cardP2);
                 if(username.equals(game.getP1username())){
                     game.setP2balance(game.getP2balance() + game.getCurrentPot());
-
+                    game.setMessage(username + " folded the hand. " + game.getP2username() + " wins!");
+                    game.setTurn(game.getP2username());
+                } else if(username.equals(game.getP2username())){
+                    game.setP1balance(game.getP2balance() + game.getCurrentPot());
+                    game.setMessage(username + " folded the hand. " + game.getP1username() + " wins!");
+                    game.setTurn(game.getP1username());
                 }
+                p1Hand = deck.deal(5);
+                p2Hand = deck.deal(5);
+
+                cardsToReturn = new ArrayList<>();
+
+                for(Card c : cardP1)
+                {
+                    cardsToReturn.add(c);
+                }
+                for(Card c : cardP2)
+                {
+                    cardsToReturn.add(c);
+                }
+                deck.returnCards(cardsToReturn);
+
+                game.setP1Hand(p1Hand);
+                game.setP2Hand(p2Hand);
+                game.setPrevP1Bet(0);
+                game.setPrevP2Bet(0);
+                game.setCurrentPot(0);
+                game.setHandTurn(0);
+                game.setDeck(deck.getDeck());
+                game.setState(GameState.BETONE);
+                gameRepo.save(game);
+                goToTable(game, username, request, response);
                 break;
         }
     }
