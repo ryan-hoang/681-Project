@@ -99,7 +99,7 @@
                         <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
                         <input type="hidden" name = "gameID" th:value="${session.gamebean.getGameID()}"/>
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span>
+                        <h1> <span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </h1>
                         <button type="submit">Exit Game</button>
                     </form>
                 </div>
