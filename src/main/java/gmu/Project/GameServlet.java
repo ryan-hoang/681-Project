@@ -215,7 +215,8 @@ public class GameServlet extends HttpServlet
         gb.setWinningHand(game.getWinningHand());
         gb.setGameID(game.getGameId());
         gb.setCurrentPot(game.getCurrentPot());
-        gb.setMessage(game.getMessage());
+        String msg = game.getMessage();
+        gb.setMessage(msg == null ? "" : msg);
         if(game.getP1username().equals(username))
         {
 
