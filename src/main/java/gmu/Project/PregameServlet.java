@@ -82,7 +82,7 @@ public class PregameServlet extends HttpServlet
             {
                 gameID = Long.parseLong(request.getParameter("games"));
                 join = gameRepo.findByGameId(gameID);
-                if(join == null)
+                if(join == null || user.isInGame())
                 {
                     response.sendRedirect(request.getContextPath() + "/homepage");
                     return;
