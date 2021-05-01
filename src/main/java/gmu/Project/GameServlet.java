@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -154,7 +155,9 @@ public class GameServlet extends HttpServlet
                         break;
                     }
                     if(betAmount + game.getPrevP1Bet() == game.getPrevP2Bet() && game.getHandTurn() != 0){ //Check to see if they are calling or "Checking" both bet 0
-                        game.setLastMove(username + " called " + betAmount);
+                        game.setLastMove(username + " called!");
+                        game.setMessage(username + " called!");
+                        game.setLastMoveTime(LocalDateTime.now());
                         game.setState(getNextState(game.getState()));
                         gameRepo.save(game);
                         goToTable(game, username, request, response);
@@ -163,7 +166,9 @@ public class GameServlet extends HttpServlet
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP1balance(game.getP1balance() - betAmount); //Update p1 balance
                     game.setTurn(game.getP2username()); //Changing turns
-                    game.setLastMove(username + " bet " + betAmount);
+                    game.setLastMove(username + " bet $" + betAmount);
+                    game.setMessage(username + " bet $" + betAmount);
+                    game.setLastMoveTime(LocalDateTime.now());
                     game.setPrevP1Bet(betAmount + game.getPrevP1Bet()); //Previous bet for checking
                     game.setHandTurn(game.getHandTurn() + 1);
                     gameRepo.save(game);
@@ -176,7 +181,9 @@ public class GameServlet extends HttpServlet
                         break;
                     }
                     if(betAmount + game.getPrevP2Bet() == game.getPrevP1Bet()){  //Check to see if they are calling or "Checking" both bet 0
-                        game.setLastMove(username + " called " + betAmount);
+                        game.setLastMove(username + " called!");
+                        game.setMessage(username + " called!");
+                        game.setLastMoveTime(LocalDateTime.now());
                         game.setState(getNextState(game.getState()));
                         game.setHandTurn(game.getHandTurn() + 1);
                         gameRepo.save(game);
@@ -186,7 +193,9 @@ public class GameServlet extends HttpServlet
                     game.setCurrentPot(game.getCurrentPot() + betAmount);
                     game.setP2balance(game.getP2balance() - betAmount); //Update p2 balance
                     game.setTurn(game.getP1username()); //Changing turns
-                    game.setLastMove(username + " bet " + betAmount);
+                    game.setLastMove(username + " bet $" + betAmount);
+                    game.setMessage(username + " bet $" + betAmount);
+                    game.setLastMoveTime(LocalDateTime.now());
                     game.setPrevP2Bet(betAmount + game.getPrevP2Bet()); //Previous bet for checking
                     gameRepo.save(game);
                     goToTable(game, username, request, response);
