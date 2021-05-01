@@ -94,7 +94,7 @@ public class GameServlet extends HttpServlet
             goToTable(game,username,request,response);
         } else {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage");
-            requestDispatcher.forward(request,response);;
+            requestDispatcher.forward(request,response);
         }
 
         /*
