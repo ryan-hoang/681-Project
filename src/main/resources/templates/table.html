@@ -94,6 +94,7 @@
         <div class="myarea">
             <div class="innercontainer">
                 <div class ="item1">
+                    <h1> <label th:text="'Player: ' + ${session.username} "></label></h1>
                     <h1> <label th:text="${session.gamebean.getGameWinner()} + ' has won the game.'"></label></h1>
                     <form action="/game" method="post">
                         <input type="hidden" name = "requestType" th:value="${session.gamebean.getGs().name()}">
@@ -138,6 +139,7 @@
                                 <button type="submit">Bet</button>
                                     <input type="number" min=0 name="betamount">
                                 <ul>
+                                    <li><span th:text="'Player: ' + ${session.username}"></span></li>
                                     <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
                                     <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
                                     <li><span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </li>
@@ -177,6 +179,7 @@
                                     <h1>Discard up to 5 cards</h1>
                                     <button type="submit">Submit</button>
                                     <ul>
+                                        <li><span th:text="'Player: ' + ${session.username}"></span></li>
                                         <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
                                         <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
                                         <li><span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </li>
@@ -216,6 +219,7 @@
                         <div class="innercontainer">
                             <div class ="item1">
                                 <ul>
+                                    <li><span th:text="'Player: ' + ${session.username}"></span></li>
                                     <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
                                     <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
                                     <li><span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </li>
@@ -258,6 +262,7 @@
                     <div class ="item1">
                         <h1>Waiting for your turn.</h1>
                         <ul>
+                            <li><span th:text="'Player: ' + ${session.username}"></span></li>
                             <li><span th:text="'Your Cash: $' + ${session.gamebean.getMyMoney()}"></span></li>
                             <li><span th:text="'Current Pot: $' + ${session.gamebean.getCurrentPot()}"></span></li>
                             <li><span th:text="'Message from server: ' + ${session.gamebean.getMessage()}"></span> </li>
