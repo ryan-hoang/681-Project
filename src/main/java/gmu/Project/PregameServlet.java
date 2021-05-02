@@ -22,7 +22,7 @@ public class PregameServlet extends HttpServlet
 {
     //Get page waiting for players to join
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         final int STARTING_BALANCE = 10;
 
