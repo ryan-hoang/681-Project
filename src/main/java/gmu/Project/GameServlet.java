@@ -194,6 +194,7 @@ public class GameServlet extends HttpServlet
             case "BETONE": //form action from first round bet in table.html
                 String s = request.getParameter("betamount");
                 if(s.equals("")) {
+                    game.setMessage("INVALID ENTRY");
                     goToTable(game, username, request, response);
                     break;
                 }
@@ -201,13 +202,14 @@ public class GameServlet extends HttpServlet
                 try{
                     betAmount = Integer.parseInt(s);
                 } catch (NumberFormatException e){
+                    game.setMessage("INVALID ENTRY");
                     goToTable(game, username, request, response);
                     break;
                 }
                 if(username.equals(game.getP1username())) {
                     if(game.getP1balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
-                            //throw error "Call or Raise"
+                            game.setMessage("INVALID ENTRY");
                             goToTable(game, username, request, response);
                             break;
                         }
@@ -238,7 +240,7 @@ public class GameServlet extends HttpServlet
                 if(username.equals(game.getP2username())) {
                     if(game.getP2balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
-                            //throw error "Call or Raise"
+                            game.setMessage("INVALID ENTRY");
                             goToTable(game, username, request, response);
                             break;
                         }
@@ -392,19 +394,21 @@ public class GameServlet extends HttpServlet
             case "BETTWO":// form action from second round bet in table.html
                 s = request.getParameter("betamount");
                 if(s.equals("")) {
+                    game.setMessage("INVALID ENTRY");
                     goToTable(game, username, request, response);
                     break;
                 }
                 try{
                     betAmount = Integer.parseInt(s);
                 } catch (NumberFormatException e){
+                    game.setMessage("INVALID ENTRY");
                     goToTable(game, username, request, response);
                     break;
                 }
                 if(username.equals(game.getP1username())) {
                     if(game.getP1balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP1Bet() < game.getPrevP2Bet() || betAmount > game.getP1balance()) {
-                            //throw error "Call or Raise"
+                            game.setMessage("INVALID ENTRY");
                             goToTable(game, username, request, response);
                             break;
                         }
@@ -436,7 +440,7 @@ public class GameServlet extends HttpServlet
                 if(username.equals(game.getP2username())) {
                     if(game.getP2balance() - betAmount != 0) {
                         if (betAmount < 0 || betAmount + game.getPrevP2Bet() < game.getPrevP1Bet() || betAmount > game.getP2balance()) {
-                            //throw error "Call or Raise"
+                            game.setMessage("INVALID ENTRY");
                             goToTable(game, username, request, response);
                             break;
                         }

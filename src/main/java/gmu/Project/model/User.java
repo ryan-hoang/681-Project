@@ -42,7 +42,6 @@ public class User {
     }
 
     @Column(unique = true)
-    @NotNull
     public String getUsername() {
         return username;
     }
