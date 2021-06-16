@@ -1,10 +1,2 @@
-# 681-Project
-
-Storage: MySQL 
-UI: Spring
-Multithreaded: multiple game sessions at once.
-Java - TLS (JSSE)- Java Secure Socket Extension
-Let's Encrypt - provides free certs
-For randomness - Secure Random generator
-Client Server
-Logging - Log4J
+5 Card coker game for school. 
+Implemented with SpringBoot, Spring MVC, Java Servlets, Thymeleaf, HTML5/CSS, and JPA.
